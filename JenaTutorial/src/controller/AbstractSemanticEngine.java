@@ -52,60 +52,82 @@ public abstract class AbstractSemanticEngine {
 			int posPrimeiraReservada = 0;
 			int posSegundaReservada = 0;
 			List<String> palavrasDaPesquisa = new ArrayList<String>();
+			List<String> listaAuxiliarDePalavras = new ArrayList<String>();
 			
 			//Remove as palavras reservadas - as que não entram na pesquisa
 			for (String palavra: lstPalavras){
 				if (!ehPalavraReservada(palavra)){
-					palavrasDaPesquisa.add(palavra);					
+					listaAuxiliarDePalavras.add(palavra);					
 				}
 			}
-			lstPalavras = (String[]) palavrasDaPesquisa.toArray();
 			int contador = 0;
-			//
-			for (String palavra: lstPalavras){
+			String palavraPesquisa = "";
+			for (String palavra: listaAuxiliarDePalavras){
 				if (ehPalavraLigacao(palavra)){
 					//Ao encontrar a palavra marca a posicao inicial se não existir
 					if (posPrimeiraReservada == 0){ posPrimeiraReservada = contador; }
 					//Senão 
 					else {
-						String palavraPesquisa = "";
-						for (int i = posPrimeiraReservada; i < posSegundaReservada; i++){
+						palavraPesquisa = "";
+						posSegundaReservada = contador;
+						for (int i = posPrimeiraReservada+1; i < posSegundaReservada; i++){
 							//Concatenando as palavras do intervalo
 							palavraPesquisa += " " + lstPalavras[i];
 						}
 						//Nova palavra vai pra lista de palavras
-						palavrasDaPesquisa.add(palavraPesquisa);
+						palavrasDaPesquisa.add(palavraPesquisa.trim());
 						//Reseta ponteiros 
-						posPrimeiraReservada = 0;
+						posPrimeiraReservada = posSegundaReservada;
 						posSegundaReservada = 0;
 					}
 				}else{
-					
+					if (posPrimeiraReservada == 0){ palavrasDaPesquisa.add(palavra.replace(",", "").trim());}
+					else{
+						if (palavra.contains(",")){
+							palavrasDaPesquisa.add(palavra.replace(",", "").trim());
+							posPrimeiraReservada = contador;
+						}
+					}
 				}
 				contador++;
 			}
-			
-			
-			
+			//Uma palavra reservada foi encontrada mas a lista acabou, pega o intervalo
+			if (posPrimeiraReservada > posSegundaReservada){
+				palavraPesquisa = "";
+				posSegundaReservada = lstPalavras.length;
+				for (int i = posPrimeiraReservada+1; i < posSegundaReservada; i++){
+					//Concatenando as palavras do intervalo
+					palavraPesquisa += " " + lstPalavras[i];
+				}
+				//Nova palavra vai pra lista de palavras
+				palavrasDaPesquisa.add(palavraPesquisa.trim());
+			}
+			System.out.println(palavrasDaPesquisa.toString() + " - " + palavrasDaPesquisa.size());
 			return true;
 		}
 		return false;
 	}
 	
 	private boolean ehPalavraLigacao(String palavra){
-		if ( "em".equals(palavra) || 
-				"na".equals(palavra) || 
-				"no".equals(palavra) || 
-				"de".equals(palavra) || 
-				"com".equals(palavra)){
-			return true;
+		if (palavra != null){
+			palavra = palavra.toLowerCase();
+		
+			if ( "em".equals(palavra) || 
+					"na".equals(palavra) || 
+					"no".equals(palavra) || 
+					"de".equals(palavra) || 
+					"com".equals(palavra) ||
+					"para".equals(palavra)){
+				return true;
+			}
 		}
 		return false;
 	}
 	
 	private boolean ehPalavraReservada(String palavra){
 		if ( "bairro".equals(palavra) ||
-				"cidade".equals(palavra)){
+				"cidade".equals(palavra) ||
+				"estado".equals(palavra)){
 			return true;
 		}
 		return false;
