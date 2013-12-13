@@ -17,11 +17,11 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 			String queryString= PREFIX_IMOVEIS;
 			
 			//Monta a querystring com as palavras informadas
-			queryString += "SELECT distinct ?parametro WHERE { ?x ?c ?y. ?x ont:Nome_Parametro ?parametro FILTER(";
+			queryString += "SELECT distinct ?parametro WHERE { ?x ont:termo_pesquisa ?y. ?x ont:Nome_Parametro ?parametro FILTER(";
 			boolean primeiraPalavra = true;
 			for(String palavra: lstPalavras){
 				if (!primeiraPalavra) queryString += "||";
-				queryString += "regex(?y, \" " + palavra + " \", \"i\")";
+				queryString += "regex(?y, \"^ " + palavra + " $\", \"i\")";
 			}
 			queryString += ")}";
 			

@@ -177,6 +177,12 @@
     
 
 
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#termo_pesquisa -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#termo_pesquisa"/>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -398,10 +404,33 @@
     
 
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Brasil -->
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Chale -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Brasil">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Paises"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Chale">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+		<termo_pesquisa>Chale</termo_pesquisa>
+		<termo_pesquisa>Chalé</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=chalé</Nome_Parametro>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Madeira -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Madeira">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <termo_pesquisa>Casa de madeira</termo_pesquisa>
+        <termo_pesquisa>madeira</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=casa+de+madeira</Nome_Parametro>
+    </owl:NamedIndividual>
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Sobrado -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Sobrado">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <Nome_Parametro>tipo+de+imóvel=Sobrado</Nome_Parametro>
+        <termo_pesquisa>sobrado</termo_pesquisa>
     </owl:NamedIndividual>
     
 
@@ -410,170 +439,72 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_em_Condomínio">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+		<Nome_Parametro>tipo+de+imóvel=casa+em+condomínio</Nome_Parametro>
+        <termo_pesquisa>casa em condominio</termo_pesquisa>
+		<termo_pesquisa>casa em condomínio</termo_pesquisa>
+		<termo_pesquisa>condominio</termo_pesquisa>
+		<termo_pesquisa>condomínio</termo_pesquisa>
     </owl:NamedIndividual>
-    
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada -->
 
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Centro -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Centro">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Bairros"/>
-        <Nome_Parametro>bairroCodigo=1111</Nome_Parametro>
-        <Nome_Bairro>Centro</Nome_Bairro>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Chacara -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Chacara">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Chale -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Chale">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <Nome_Parametro>tipo+de+imóvel=casa+pré+fabricada</Nome_Parametro>
+        <termo_pesquisa>casa pre fabricada</termo_pesquisa>
+		<termo_pesquisa>pre fabricada</termo_pesquisa>
+		<termo_pesquisa>casa pré fabricada</termo_pesquisa>
+		<termo_pesquisa>pré fabricada</termo_pesquisa>
     </owl:NamedIndividual>
     
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada -->
 
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Cobertura -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Cobertura">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Condominio -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Condominio">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno"/>
-    </owl:NamedIndividual>
-    
+        <Nome_Parametro>tipo+de+imóvel=casa+pré+moldada</Nome_Parametro>
+        <termo_pesquisa>casa pré moldada</termo_pesquisa>
+		<termo_pesquisa>pré moldada</termo_pesquisa>
+		<termo_pesquisa>casa pre moldada</termo_pesquisa>
+		<termo_pesquisa>pre moldada</termo_pesquisa>
+    </owl:NamedIndividual>	
 
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao -->
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Duplex -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Duplex">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Fazenda -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Fazenda">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Flat -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Flat">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Kitnet -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Kitnet">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Leste -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Leste">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Loft -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Loft">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Loteamento -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Loteamento">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Madeira -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Madeira">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <Nome_Parametro>tipo+de+imovel=casa+de+madeira</Nome_Parametro>
-    </owl:NamedIndividual>
-    
+        <Nome_Parametro>tipo+de+imóvel=casa+padrão</Nome_Parametro>
+        <termo_pesquisa>casa padrao</termo_pesquisa>
+		<termo_pesquisa>casa padrão</termo_pesquisa>
+    </owl:NamedIndividual>	
+	
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Novo -->
 
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Norte -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Norte">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Novo -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Novo">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Novo">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Situacao"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Oeste -->
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Usado -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Oeste">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Usado">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Situacao"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Padrao -->
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno_Condominio -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Padrao">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno_Condominio">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sitio -->
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno_Loteamento -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sitio">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sobrado -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sobrado">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sul -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sul">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno_Loteamento">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Terreno"/>
     </owl:NamedIndividual>
     
 
@@ -586,10 +517,26 @@
     
 
 
-    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Usado -->
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Cobertura -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Usado">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Situacao"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Cobertura">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Duplex -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Duplex">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Flat -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Flat">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
     </owl:NamedIndividual>
     
 
@@ -605,14 +552,50 @@
     
 
 
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Kitnet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Kitnet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Loft -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Loft">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Padrao -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#ap_Padrao">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Apartamento"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#bairro_Centro -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#bairro_Centro">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Bairros"/>
+        <Nome_Bairro>Centro</Nome_Bairro>
+        <Nome_Parametro>bairroCodigo=1111</Nome_Parametro>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Estados"/>
         <Sigla_Estado rdf:datatype="&xsd;string">RS</Sigla_Estado>
+        <termo_pesquisa>rs</termo_pesquisa>
         <Nome_Parametro>estado=rio+grande+do+sul</Nome_Parametro>
+        <termo_pesquisa>rio grande do sul</termo_pesquisa>
         <Nome_Estado>Rio Grande do Sul</Nome_Estado>
-        <EstadoDoPais rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Brasil"/>
+        <EstadoDoPais rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pais_Brasil"/>
     </owl:NamedIndividual>
     
 
@@ -624,7 +607,7 @@
         <Nome_Parametro>estado=santa+catarina</Nome_Parametro>
         <Sigla_Estado>SC</Sigla_Estado>
         <Nome_Estado>Santa Catarina</Nome_Estado>
-        <EstadoDoPais rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Brasil"/>
+        <EstadoDoPais rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pais_Brasil"/>
     </owl:NamedIndividual>
     
 
@@ -635,6 +618,7 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Cidades"/>
         <Nome_Parametro>cidade=canoas</Nome_Parametro>
         <Nome_Cidade>Canoas</Nome_Cidade>
+        <termo_pesquisa>canoas</termo_pesquisa>
         <CidadeDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
         <CidadeDaRegiaoGeografica rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regg_metropolitana"/>
         <CidadeDaRegiaoGeopolitica rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regp_grande_porto_alegre"/>
@@ -646,8 +630,9 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#cdd_gravatai">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Cidades"/>
-        <Nome_Cidade>gravatai</Nome_Cidade>
-        <Nome_Cidade>gravataí</Nome_Cidade>
+        <termo_pesquisa>gravatai</termo_pesquisa>
+        <termo_pesquisa>gravataí</termo_pesquisa>
+        <Nome_Cidade>Gravataí</Nome_Cidade>
         <Nome_Parametro>cidade=gravataí</Nome_Parametro>
         <CidadeDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
         <CidadeDaRegiaoGeografica rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regg_metropolitana"/>
@@ -660,9 +645,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#cdd_porto_alegre">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Cidades"/>
-        <Nome_Cidade>POA</Nome_Cidade>
+        <termo_pesquisa>porto</termo_pesquisa>
+        <termo_pesquisa>poa</termo_pesquisa>
         <Nome_Cidade>Porto Alegre</Nome_Cidade>
         <Nome_Parametro>cidade=porto+alegre</Nome_Parametro>
+        <termo_pesquisa>Porto Alegre</termo_pesquisa>
         <CidadeDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
         <CidadeDaRegiaoGeografica rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regg_metropolitana"/>
         <CidadeDaRegiaoGeopolitica rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regp_grande_porto_alegre"/>
@@ -686,10 +673,43 @@
     
 
 
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pais_Brasil -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pais_Brasil">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Paises"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Chacara -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Chacara">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Fazenda -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Fazenda">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Sitio -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pr_Sitio">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Propriedade_Rural"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regg_metropolitana -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regg_metropolitana">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Geografica"/>
+        <termo_pesquisa>metropolitana</termo_pesquisa>
         <Nome_regiao>Metropolitana</Nome_regiao>
         <RegiaoDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
     </owl:NamedIndividual>
@@ -700,6 +720,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regp_grande_porto_alegre">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Geopolitica"/>
+        <termo_pesquisa>grande porto alegre</termo_pesquisa>
         <Nome_regiao>Grande Porto Alegre</Nome_regiao>
         <Nome_Parametro>regiao=grande+porto+alegre</Nome_Parametro>
         <RegiaoDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
@@ -711,7 +732,43 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#regp_litoral">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Geopolitica"/>
+        <Nome_Parametro>regiao=Litoral</Nome_Parametro>
+        <termo_pesquisa>praia</termo_pesquisa>
+        <termo_pesquisa>litoral</termo_pesquisa>
+        <Nome_regiao>Litoral</Nome_regiao>
         <RegiaoDoEstado rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#br_rs"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Leste -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Leste">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Norte -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Norte">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Oeste -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Oeste">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Sul -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#z_Sul">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Zonas"/>
     </owl:NamedIndividual>
 </rdf:RDF>
 
