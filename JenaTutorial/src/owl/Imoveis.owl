@@ -408,9 +408,9 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Chale">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-		<termo_pesquisa>Chale</termo_pesquisa>
-		<termo_pesquisa>Chalé</termo_pesquisa>
         <Nome_Parametro>tipo+de+imóvel=chalé</Nome_Parametro>
+        <termo_pesquisa>Chalé</termo_pesquisa>
+        <termo_pesquisa>Chale</termo_pesquisa>
     </owl:NamedIndividual>
     
 
@@ -423,14 +423,52 @@
         <termo_pesquisa>madeira</termo_pesquisa>
         <Nome_Parametro>tipo+de+imóvel=casa+de+madeira</Nome_Parametro>
     </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <Nome_Parametro>tipo+de+imóvel=casa+padrão</Nome_Parametro>
+        <termo_pesquisa>casa padrao</termo_pesquisa>
+        <termo_pesquisa>casa padrão</termo_pesquisa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <termo_pesquisa>casa pré fabricada</termo_pesquisa>
+        <termo_pesquisa>pre fabricada</termo_pesquisa>
+        <termo_pesquisa>pré fabricada</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=casa+pré+fabricada</Nome_Parametro>
+        <termo_pesquisa>casa pre fabricada</termo_pesquisa>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
+        <termo_pesquisa>pre moldada</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=casa+pré+moldada</Nome_Parametro>
+        <termo_pesquisa>casa pré moldada</termo_pesquisa>
+        <termo_pesquisa>pré moldada</termo_pesquisa>
+        <termo_pesquisa>casa pre moldada</termo_pesquisa>
+    </owl:NamedIndividual>
+    
 
 
     <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Sobrado -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Sobrado">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <Nome_Parametro>tipo+de+imóvel=Sobrado</Nome_Parametro>
         <termo_pesquisa>sobrado</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=Sobrado</Nome_Parametro>
     </owl:NamedIndividual>
     
 
@@ -439,44 +477,15 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_em_Condomínio">
         <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-		<Nome_Parametro>tipo+de+imóvel=casa+em+condomínio</Nome_Parametro>
+        <termo_pesquisa>casa em condomínio</termo_pesquisa>
+        <Nome_Parametro>tipo+de+imóvel=casa+em+condomínio</Nome_Parametro>
+        <termo_pesquisa>condominio</termo_pesquisa>
         <termo_pesquisa>casa em condominio</termo_pesquisa>
-		<termo_pesquisa>casa em condomínio</termo_pesquisa>
-		<termo_pesquisa>condominio</termo_pesquisa>
-		<termo_pesquisa>condomínio</termo_pesquisa>
-    </owl:NamedIndividual>
-	
-	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Fabricada">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <Nome_Parametro>tipo+de+imóvel=casa+pré+fabricada</Nome_Parametro>
-        <termo_pesquisa>casa pre fabricada</termo_pesquisa>
-		<termo_pesquisa>pre fabricada</termo_pesquisa>
-		<termo_pesquisa>casa pré fabricada</termo_pesquisa>
-		<termo_pesquisa>pré fabricada</termo_pesquisa>
+        <termo_pesquisa>condomínio</termo_pesquisa>
     </owl:NamedIndividual>
     
-	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Pre_Moldada">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <Nome_Parametro>tipo+de+imóvel=casa+pré+moldada</Nome_Parametro>
-        <termo_pesquisa>casa pré moldada</termo_pesquisa>
-		<termo_pesquisa>pré moldada</termo_pesquisa>
-		<termo_pesquisa>casa pre moldada</termo_pesquisa>
-		<termo_pesquisa>pre moldada</termo_pesquisa>
-    </owl:NamedIndividual>	
 
-	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa_Padrao">
-        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Casa"/>
-        <Nome_Parametro>tipo+de+imóvel=casa+padrão</Nome_Parametro>
-        <termo_pesquisa>casa padrao</termo_pesquisa>
-		<termo_pesquisa>casa padrão</termo_pesquisa>
-    </owl:NamedIndividual>	
-	
     <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Novo -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Sit_Novo">
@@ -672,6 +681,128 @@
     </owl:NamedIndividual>
     
 
+
+    <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_academia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_academia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>academia</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=academia</Nome_Parametro>
+    </owl:NamedIndividual>
+	
+
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_academia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_academia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>academia</termo_pesquisa>
+		<termo_pesquisa>fitness</termo_pesquisa>
+		<termo_pesquisa>espaço fitness</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=Academia+/+espaço+fitness</Nome_Parametro>
+    </owl:NamedIndividual>
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_acesso -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_acesso">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>deficiente</termo_pesquisa>
+		<termo_pesquisa>deficientes</termo_pesquisa>
+		<termo_pesquisa>acesso deficientes</termo_pesquisa>
+		<termo_pesquisa>acesso deficiente</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=Acesso+para+deficientes</Nome_Parametro>
+    </owl:NamedIndividual>
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_churrasqueira -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_churrasqueira">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>churrasqueira</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=Churrasqueira+coletiva</Nome_Parametro>
+    </owl:NamedIndividual>	
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_elevador -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_elevador">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>elevador</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=elevador</Nome_Parametro>
+    </owl:NamedIndividual>		
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_jardim -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_jardim">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>jardim</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=jardim</Nome_Parametro>
+    </owl:NamedIndividual>		
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_piscina -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_piscina">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>piscina</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=piscina</Nome_Parametro>
+    </owl:NamedIndividual>	
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_playground -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_playground">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>playground</termo_pesquisa>
+		<termo_pesquisa>play</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=playground</Nome_Parametro>
+    </owl:NamedIndividual>
+	
+   
+
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_portaria -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_portaria">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>portaria</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=portaria</Nome_Parametro>
+    </owl:NamedIndividual>
+
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_quadra -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_quadra">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>quadra</termo_pesquisa>
+		<termo_pesquisa>quadra esportiva</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=quadra+esportiva</Nome_Parametro>
+    </owl:NamedIndividual>	
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_salao_festa -->	
+	
+	<owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_salao_festa">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>salão</termo_pesquisa>
+		<termo_pesquisa>salao</termo_pesquisa>
+		<termo_pesquisa>salão de festas</termo_pesquisa>
+		<termo_pesquisa>salao de festas</termo_pesquisa>
+		<termo_pesquisa>festas</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=salão+de+festas</Nome_Parametro>
+    </owl:NamedIndividual>
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_zelador -->	
+	
+	<owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_zelador">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>zelador</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=zelador</Nome_Parametro>
+    </owl:NamedIndividual>	
+	
+	<!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_area_servico -->	
+	
+	<owl:NamedIndividual rdf:about="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#infra_area_servico">
+        <rdf:type rdf:resource="http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#Infraestruturas"/>
+        <termo_pesquisa>área de serviço</termo_pesquisa>
+		<termo_pesquisa>area de serviço</termo_pesquisa>
+        <Nome_Parametro>infraestrutura=Área+de+serviço</Nome_Parametro>
+    </owl:NamedIndividual>	
+	
+	
 
     <!-- http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#pais_Brasil -->
 
