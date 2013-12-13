@@ -2,16 +2,27 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.Segment;
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 
 public abstract class AbstractSemanticEngine {
 
 	private String textoBusca;
 	private Query query;
+	private List<String> listaDeParametros;
+	private List<String> listaDePalavrasParaPesquisa;
+	private OntModel ontologia;
+	List<QuerySolution> lstResultados;
 	
 
 	public AbstractSemanticEngine() {
@@ -27,6 +38,14 @@ public abstract class AbstractSemanticEngine {
 		this.textoBusca = textoBusca;
 	}
 	
+	public OntModel getOntologia() {
+		return ontologia;
+	}
+
+	public void setOntologia(OntModel ontologia) {
+		this.ontologia = ontologia;
+	}
+
 	public Query getQuery() {
 		return query;
 	}
@@ -53,20 +72,22 @@ public abstract class AbstractSemanticEngine {
 			int posSegundaReservada = 0;
 			List<String> palavrasDaPesquisa = new ArrayList<String>();
 			List<String> listaAuxiliarDePalavras = new ArrayList<String>();
+			int contador = 0;
+			String palavraPesquisa = "";
+			
 			
 			//Remove as palavras reservadas - as que não entram na pesquisa
 			for (String palavra: lstPalavras){
 				if (!ehPalavraReservada(palavra)){
-					listaAuxiliarDePalavras.add(palavra);					
+					listaAuxiliarDePalavras.add(palavra);
 				}
 			}
-			int contador = 0;
-			String palavraPesquisa = "";
+			
 			for (String palavra: listaAuxiliarDePalavras){
 				if (ehPalavraLigacao(palavra)){
 					//Ao encontrar a palavra marca a posicao inicial se não existir
 					if (posPrimeiraReservada == 0){ posPrimeiraReservada = contador; }
-					//Senão 
+					//Senão pega o intervalo entre a primeira e a segunda marcação como uma unica palavra
 					else {
 						palavraPesquisa = "";
 						posSegundaReservada = contador;
@@ -81,8 +102,13 @@ public abstract class AbstractSemanticEngine {
 						posSegundaReservada = 0;
 					}
 				}else{
-					if (posPrimeiraReservada == 0){ palavrasDaPesquisa.add(palavra.replace(",", "").trim());}
-					else{
+					//Virgula representa o mesmo que uma palavra de ligação
+					if (posPrimeiraReservada == 0){ 
+						palavrasDaPesquisa.add(palavra.replace(",", "").trim());
+						if (palavra.contains(",")){
+							posPrimeiraReservada = contador;
+						}
+					}else{
 						if (palavra.contains(",")){
 							palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 							posPrimeiraReservada = contador;
@@ -103,11 +129,17 @@ public abstract class AbstractSemanticEngine {
 				palavrasDaPesquisa.add(palavraPesquisa.trim());
 			}
 			System.out.println(palavrasDaPesquisa.toString() + " - " + palavrasDaPesquisa.size());
+			this.listaDePalavrasParaPesquisa = palavrasDaPesquisa;
 			return true;
 		}
 		return false;
 	}
 	
+	/*
+	 * Avalia se a palavra informada é um verbo de ligação
+	 * @param palavra Palavra a ser avaliada
+	 * @return Verdadeiro se a palavra for de ligação
+	 */
 	private boolean ehPalavraLigacao(String palavra){
 		if (palavra != null){
 			palavra = palavra.toLowerCase();
@@ -124,6 +156,11 @@ public abstract class AbstractSemanticEngine {
 		return false;
 	}
 	
+	/*
+	 * Informa se a palavra informada é reservada
+	 * @param palavra Palavra para avaliação
+	 * @result Verdadeiro se a palavra informada for reservada 
+	 */
 	private boolean ehPalavraReservada(String palavra){
 		if ( "bairro".equals(palavra) ||
 				"cidade".equals(palavra) ||
@@ -139,5 +176,39 @@ public abstract class AbstractSemanticEngine {
 	 * @return Query para aplicação em uma consulta
 	 */
 	protected abstract Query geraConsultaSPARQL(List<String> lstPalavras);
+	
+	public String getResultsAsString(){
+		String parametos ="";
+		for(QuerySolution item: this.lstResultados){
+			if (parametos.isEmpty()){
+				parametos = item.getLiteral("parametro").toString();
+			}else{
+				parametos += "&" + item.getLiteral("parametro").toString();
+			}
+		}
+		System.out.println(parametos);
+		return parametos;
+	}
+	
+	public Map<String, String> getResultAsParameter(){
+		return null;
+	}
+	
+	
+	/*
+	 * Executa a consulta junto a ontologia
+	 */
+	public void executeQuery(){
+		Query query = this.geraConsultaSPARQL(this.listaDePalavrasParaPesquisa);
+		
+		QueryExecution qe = QueryExecutionFactory.create(query, this.getOntologia());
+		ResultSet results = qe.execSelect();
+
+		this.lstResultados = ResultSetFormatter.toList(results);
+		
+		qe.close();
+
+		
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 
 public class SemanticEngineImoveis extends AbstractSemanticEngine {
@@ -17,16 +18,23 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 			String queryString= PREFIX_IMOVEIS;
 			
 			//Monta a querystring com as palavras informadas
-			queryString += "SELECT distinct ?parametro WHERE { ?x ont:termo_pesquisa ?y. ?x ont:Nome_Parametro ?parametro FILTER(";
+			queryString += "SELECT distinct ?parametro WHERE { ?x ?c ?y. ?x ont:Nome_Parametro ?parametro FILTER(";
 			boolean primeiraPalavra = true;
 			for(String palavra: lstPalavras){
 				if (!primeiraPalavra) queryString += "||";
 				queryString += "regex(?y, \"^ " + palavra + " $\", \"i\")";
+				primeiraPalavra = false;
 			}
 			queryString += ")}";
 			
 			//Cria a query
-			return QueryFactory.create(queryString);
+			Query query = null;
+			try{
+				query = QueryFactory.create(queryString);
+			}catch(Exception e){
+				query = null;
+			}
+			return query;
 		}
 		return null;
 	}

@@ -2,6 +2,7 @@ package teste;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import controller.SemanticEngineImoveis;
@@ -9,7 +10,8 @@ import controller.SemanticEngineImoveis;
 public class AbstractSemanticEngineTest {
 
 	@Test
-	public void test() {
+	@Ignore
+	public void testPreparadorConteudoBusca() {
 		SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
 		
 		engImoveis.setTextoBusca("Porto Alegre");
@@ -38,7 +40,23 @@ public class AbstractSemanticEngineTest {
 		
 		engImoveis.setTextoBusca("Apartamento COM churrasqueira, sacada, salão DE festas NO Moinho de ventos, porto alegre");
 		assertEquals(true, engImoveis.preparaConteudoBusca());
+		
+		engImoveis.setTextoBusca("porto alegre, rio grande do sul");
+		assertEquals(true, engImoveis.preparaConteudoBusca());
+		
+		engImoveis.setTextoBusca("porto alegre rio grande do sul");
+		assertEquals(true, engImoveis.preparaConteudoBusca());
 
+	}
+	
+	@Test
+	public void testConsultaOntologia() {
+		SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+		
+		engImoveis.setTextoBusca("Casa em Porto Alegre com 2 quartos");
+		engImoveis.preparaConteudoBusca();
+		engImoveis.executeQuery();
+		engImoveis.getResultsAsString();
 	}
 
 }
