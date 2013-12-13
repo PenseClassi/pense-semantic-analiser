@@ -149,6 +149,7 @@ public abstract class AbstractSemanticEngine {
 					"no".equals(palavra) || 
 					"de".equals(palavra) || 
 					"com".equals(palavra) ||
+					"e".equals(palavra) ||
 					"para".equals(palavra)){
 				return true;
 			}

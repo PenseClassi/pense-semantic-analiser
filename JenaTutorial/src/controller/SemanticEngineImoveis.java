@@ -34,7 +34,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 			boolean primeiraPalavra = true;
 			for(String palavra: lstPalavras){
 				if (!primeiraPalavra) queryString += "||";
-				queryString += "regex(?y, \"" + palavra + "\", \"i\")";
+				queryString += "regex(?y, \"^" + palavra + "$\", \"i\")";
 //				queryString += "regex(?y, \"" + palavra + "\", \"i\")";
 				primeiraPalavra = false;
 			}

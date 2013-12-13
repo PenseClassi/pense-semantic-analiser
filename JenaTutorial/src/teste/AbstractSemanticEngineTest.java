@@ -57,6 +57,21 @@ public class AbstractSemanticEngineTest {
 		engImoveis.preparaConteudoBusca();
 		engImoveis.executeQuery();
 		engImoveis.getResultsAsString();
+		
+		engImoveis.setTextoBusca("Porto Alegre");
+		engImoveis.preparaConteudoBusca();
+		engImoveis.executeQuery();
+		assertEquals("cidade=porto+alegre", engImoveis.getResultsAsString());
+		
+		engImoveis.setTextoBusca("Apartamento com lareira elevador portaria");
+		engImoveis.preparaConteudoBusca();
+		engImoveis.executeQuery();
+		engImoveis.getResultsAsString();
+		
+		engImoveis.setTextoBusca("Apartamento com lareira, elevador e portaria");
+		engImoveis.preparaConteudoBusca();
+		engImoveis.executeQuery();
+		assertEquals("infraestrutura=portaria&tipo+de+imóvel=apartamento&infraestrutura=elevador", engImoveis.getResultsAsString());
 	}
 
 }
