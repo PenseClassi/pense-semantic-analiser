@@ -11,12 +11,12 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import org.springframework.util.StringUtils;
 
 public abstract class AbstractSemanticEngine {
 
 	private String textoBusca;
 	private Query query;
-	private List<String> listaDeParametros;
 	private List<String> listaDePalavrasParaPesquisa;
 	private OntModel ontologia;
 	List<QuerySolution> lstResultados;
@@ -51,11 +51,7 @@ public abstract class AbstractSemanticEngine {
 	public void setQuery(Query query) {
 		this.query = query;
 	}
-	
-	
-	
-	
-	
+
 
 	/*
 	 * Trata o conteudo informado no campo de busca para posterior pesquisa 
@@ -397,5 +393,23 @@ public abstract class AbstractSemanticEngine {
 		
 		qe.close();		
 	}
+        
+        public boolean obtemParametros(String texto){
+            /*
+            engImoveis.preparaConteudoBusca("cobertura porto alegre");
+            engImoveis.executeQuery();
+            engImoveis.getResultsAsString();
+            */
+            if (!StringUtils.isEmpty(texto)){
+                try{
+                    this.preparaConteudoBusca(texto);
+                    this.executeQuery();
+                    return true;
+                }catch(Exception e){
+                    
+                }
+            }
+            return false;
+        }
 
 }

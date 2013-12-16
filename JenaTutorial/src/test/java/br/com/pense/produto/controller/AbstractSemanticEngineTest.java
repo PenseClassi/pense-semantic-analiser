@@ -5,10 +5,6 @@
  */
 package br.com.pense.produto.controller;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.query.Query;
-import java.util.List;
-import java.util.Map;
 import junit.framework.TestCase;
 
 /**
