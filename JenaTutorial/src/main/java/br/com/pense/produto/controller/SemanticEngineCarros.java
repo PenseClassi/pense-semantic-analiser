@@ -1,4 +1,4 @@
-package controller;
+package br.com.pense.produto.controller;
 
 import java.util.List;
 
