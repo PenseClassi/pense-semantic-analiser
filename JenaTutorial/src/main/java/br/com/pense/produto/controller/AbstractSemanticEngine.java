@@ -1,4 +1,4 @@
-package br.com.pense.produto.controller;
+Ôªøpackage br.com.pense.produto.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public abstract class AbstractSemanticEngine {
 			String palavraPesquisa = "";
 			
 			
-			//Remove as palavras reservadas - as que n„o entram na pesquisa
+			//Remove as palavras reservadas - as que n√£o entram na pesquisa
 			for (String palavra: lstPalavras){
 				if (!ehPalavraReservada(palavra)){
 					listaAuxiliarDePalavras.add(palavra);
@@ -82,9 +82,9 @@ public abstract class AbstractSemanticEngine {
 			
 			for (String palavra: listaAuxiliarDePalavras){
 				if (ehPalavraLigacao(palavra)){
-					//Ao encontrar a palavra marca a posicao inicial se n„o existir
+					//Ao encontrar a palavra marca a posicao inicial se n√£o existir
 					if (posPrimeiraReservada == 0){ posPrimeiraReservada = contador; }
-					//Sen„o pega o intervalo entre a primeira e a segunda marcaÁ„o como uma unica palavra
+					//Sen√£o pega o intervalo entre a primeira e a segunda marca√ß√£o como uma unica palavra
 					else {
 						palavraPesquisa = "";
 						posSegundaReservada = contador;
@@ -99,7 +99,7 @@ public abstract class AbstractSemanticEngine {
 						posSegundaReservada = 0;
 					}
 				}else{
-					//Virgula representa o mesmo que uma palavra de ligaÁ„o
+					//Virgula representa o mesmo que uma palavra de liga√ß√£o
 					if (posPrimeiraReservada == 0){ 
 						palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 						if (palavra.contains(",")){
@@ -141,7 +141,7 @@ public abstract class AbstractSemanticEngine {
 					
 			String[] lstPalavras =  this.textoBusca.split(" ");		
 			
-			//Remove as palavras reservadas - as que n„o entram na pesquisa
+			//Remove as palavras reservadas - as que n√£o entram na pesquisa
 			for (String palavra: lstPalavras){
 				if (!ehPalavraReservada(palavra)){
 					listaAuxiliarDePalavras.add(palavra);
@@ -167,11 +167,11 @@ public abstract class AbstractSemanticEngine {
 		
 		for (String palavra: preLista){
 			if (ehPalavraLigacao(palavra)){
-				//Ao encontrar a palavra marca a posicao inicial se n„o existir
+				//Ao encontrar a palavra marca a posicao inicial se n√£o existir
 				if (posPrimeiraReservada == 0){ 
 					posPrimeiraReservada = contador; 
 					
-//					//Pega o bloco atÈ a primeira palavra reservada como uma unica palavra
+//					//Pega o bloco at√© a primeira palavra reservada como uma unica palavra
 //					palavraPesquisa = "";
 //					for (int i = 0; i < posPrimeiraReservada; i++){
 //						//Concatenando as palavras do intervalo
@@ -181,7 +181,7 @@ public abstract class AbstractSemanticEngine {
 //					palavrasDaPesquisa.add(palavraPesquisa.trim());
 					
 				}
-				//Sen„o pega o intervalo entre a primeira e a segunda marcaÁ„o como uma unica palavra
+				//Sen√£o pega o intervalo entre a primeira e a segunda marca√ß√£o como uma unica palavra
 				else {
 					palavraPesquisa = "";
 					posSegundaReservada = contador;
@@ -196,7 +196,7 @@ public abstract class AbstractSemanticEngine {
 					posSegundaReservada = 0;
 				}
 			}else{
-				//Virgula representa o mesmo que uma palavra de ligaÁ„o
+				//Virgula representa o mesmo que uma palavra de liga√ß√£o
 				if (posPrimeiraReservada == 0){ 
 					palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 					if (palavra.contains(",")){
@@ -246,12 +246,12 @@ public abstract class AbstractSemanticEngine {
 			
 			if (ehPalavraLigacao(palavra)){
 				
-				//Ao encontrar a palavra marca a posicao inicial se n„o existir
+				//Ao encontrar a palavra marca a posicao inicial se n√£o existir
 				if (posPrimeiraReservada == 0){ 
 					posPrimeiraReservada = contador; 
 					
 				}
-				//Sen„o pega o intervalo entre a primeira e a segunda marcaÁ„o como uma unica palavra
+				//Sen√£o pega o intervalo entre a primeira e a segunda marca√ß√£o como uma unica palavra
 				else {
 					palavraPesquisa = "";
 					posSegundaReservada = contador;
@@ -281,7 +281,7 @@ public abstract class AbstractSemanticEngine {
 					}
 				}
 			}else{
-				//Virgula representa o mesmo que uma palavra de ligaÁ„o
+				//Virgula representa o mesmo que uma palavra de liga√ß√£o
 				if (posPrimeiraReservada == 0){ 
 					palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 					if (palavra.contains(",")){
@@ -291,7 +291,7 @@ public abstract class AbstractSemanticEngine {
 					if (palavra.contains(",")){
 						//Reprocessa as palavras entre a primeira reservada e a palavra com virgula
 						palavrasDaPesquisa.addAll(preparaListaParaPesquisa_b(preLista.subList(posPrimeiraReservada+1, contador)));
-						//Insere a palavra com vÌrgula na lista tb
+						//Insere a palavra com v√≠rgula na lista tb
 						palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 						posPrimeiraReservada = contador;
 					}
@@ -321,9 +321,9 @@ public abstract class AbstractSemanticEngine {
 	}
 	
 	/*
-	 * Avalia se a palavra informada È um verbo de ligaÁ„o
+	 * Avalia se a palavra informada √© um verbo de liga√ß√£o
 	 * @param palavra Palavra a ser avaliada
-	 * @return Verdadeiro se a palavra for de ligaÁ„o
+	 * @return Verdadeiro se a palavra for de liga√ß√£o
 	 */
 	private boolean ehPalavraLigacao(String palavra){
 		if (palavra != null){
@@ -343,8 +343,8 @@ public abstract class AbstractSemanticEngine {
 	}
 	
 	/*
-	 * Informa se a palavra informada È reservada
-	 * @param palavra Palavra para avaliaÁ„o
+	 * Informa se a palavra informada √© reservada
+	 * @param palavra Palavra para avalia√ß√£o
 	 * @result Verdadeiro se a palavra informada for reservada 
 	 */
 	private boolean ehPalavraReservada(String palavra){
@@ -359,8 +359,8 @@ public abstract class AbstractSemanticEngine {
 
 	/*
 	 * Gera a query de consulta SPARQL baseado em uma lista de palavras informadas
-	 * @param lstPalavras Lista de palavras que dever„o estar presentes na consulta
-	 * @return Query para aplicaÁ„o em uma consulta
+	 * @param lstPalavras Lista de palavras que dever√£o estar presentes na consulta
+	 * @return Query para aplica√ß√£o em uma consulta
 	 */
 	protected abstract Query geraConsultaSPARQL(List<String> lstPalavras);
 	

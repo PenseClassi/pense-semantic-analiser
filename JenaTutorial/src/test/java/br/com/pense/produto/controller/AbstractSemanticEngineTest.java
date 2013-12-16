@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -68,14 +68,14 @@ public class AbstractSemanticEngineTest extends TestCase {
 
         System.out.println("----------------------------------------------------------------------------");
         //----------------------------------------------------------------------------
-        engImoveis.preparaConteudoBusca("Chalé com suíte na serra de Santa Catarina");
+        engImoveis.preparaConteudoBusca("ChalÃ© com suÃ­te na serra de Santa Catarina");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
 
         System.out.println("----------------------------------------------------------------------------");
         //----------------------------------------------------------------------------
 
-        engImoveis.preparaConteudoBusca("Apartamento em condomínio em poa com zelador, play e piscina");
+        engImoveis.preparaConteudoBusca("Apartamento em condomÃ­nio em poa com zelador, play e piscina");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
         System.out.println("----------------------------------------------------------------------------");
@@ -115,7 +115,7 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.getResultsAsString();
 
         System.out.println("----------------------------------------------------------------------------");
-        engImoveis.preparaConteudoBusca("Casas em Florianópolis");
+        engImoveis.preparaConteudoBusca("Casas em FlorianÃ³polis");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
 
@@ -140,17 +140,17 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.getResultsAsString();
 
         System.out.println("----------------------------------------------------------------------------");
-        engImoveis.preparaConteudoBusca("Apartamentos Florianópolis");
+        engImoveis.preparaConteudoBusca("Apartamentos FlorianÃ³polis");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
 
         System.out.println("----------------------------------------------------------------------------");
-        engImoveis.preparaConteudoBusca("kitinete em Florianópolis");
+        engImoveis.preparaConteudoBusca("kitinete em FlorianÃ³polis");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
 
         System.out.println("----------------------------------------------------------------------------");
-        engImoveis.preparaConteudoBusca("apartamento florianópolis");
+        engImoveis.preparaConteudoBusca("apartamento florianÃ³polis");
         engImoveis.executeQuery();
         engImoveis.getResultsAsString();
 

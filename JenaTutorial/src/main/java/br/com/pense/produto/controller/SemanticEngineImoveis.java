@@ -1,4 +1,4 @@
-package br.com.pense.produto.controller;
+﻿package br.com.pense.produto.controller;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     @Override
     protected boolean ehPalavraDeExcessao(String palavra) {
         palavra = palavra.toLowerCase();
-        if ("casa".equals(palavra) || "sal�o".equals(palavra)) {
+        if ("casa".equals(palavra) || "salão".equals(palavra)) {
             return true;
         }
         return false;
