@@ -34,7 +34,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 			boolean primeiraPalavra = true;
 			for(String palavra: lstPalavras){
 				if (!primeiraPalavra) queryString += "||";
-				queryString += "regex(?y, \"^" + palavra + "$\", \"i\")";
+				queryString += "regex(?y, \"^" + palavra.toLowerCase() + "$\", \"i\")";
 //				queryString += "regex(?y, \"" + palavra + "\", \"i\")";
 				primeiraPalavra = false;
 			}
@@ -50,6 +50,15 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 			return query;
 		}
 		return null;
+	}
+
+	@Override
+	protected boolean ehPalavraDeExcessao(String palavra) {
+		palavra = palavra.toLowerCase();
+		if ("casa".equals(palavra) || "salão".equals(palavra)){
+			return true;
+		}
+		return false;
 	}
 
 	

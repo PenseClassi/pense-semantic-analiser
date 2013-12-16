@@ -12,4 +12,10 @@ public class SemanticEngineCarros extends AbstractSemanticEngine {
 		return null;
 	}
 
+	@Override
+	protected boolean ehPalavraDeExcessao(String palavra) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
