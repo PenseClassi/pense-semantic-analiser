@@ -263,7 +263,7 @@ public abstract class AbstractSemanticEngine {
 					palavrasDaPesquisa.add(palavraPesquisa.trim());
 					//Reseta ponteiros 
 					posPrimeiraReservada = posSegundaReservada;
-					posSegundaReservada = 0;
+					posSegundaReservada = -1;
 				}
 				
 				if ("de".equals(palavra) && contador-1 >= 0 ){
@@ -276,9 +276,7 @@ public abstract class AbstractSemanticEngine {
 							novaPalavra+= " " + preLista.get(contador+1);
 							palavrasDaPesquisa.remove(palavrasDaPesquisa.size()-1);
 							palavrasDaPesquisa.add(novaPalavra.replace(",", "").trim());
-	//						contador++;
 							jumpToNextWord = true;
-	//						continue;
 						}
 					}
 				}
@@ -291,7 +289,6 @@ public abstract class AbstractSemanticEngine {
 					}
 				}else{
 					if (palavra.contains(",")){
-//						palavrasDaPesquisa.add(palavra.replace(",", "").trim());
 						//Reprocessa as palavras entre a primeira reservada e a palavra com virgula
 						palavrasDaPesquisa.addAll(preparaListaParaPesquisa_b(preLista.subList(posPrimeiraReservada+1, contador)));
 						//Insere a palavra com vírgula na lista tb
@@ -304,8 +301,21 @@ public abstract class AbstractSemanticEngine {
 		}
 		//Uma palavra reservada foi encontrada mas a lista acabou, reprocessa o restante
 		if (posPrimeiraReservada > posSegundaReservada){
+			//Se a lista acabou com uma referencia a lugar "em" toma o restante como nome de cidade/lugar
+			if ("em".equals(preLista.get(posPrimeiraReservada).toLowerCase())){
+				//Trata o restante como uma unica palavra
+				palavraPesquisa = "";
+				posSegundaReservada = preLista.size();
+				for (int i = posPrimeiraReservada+1; i < posSegundaReservada; i++){
+					//Concatenando as palavras do intervalo
+					palavraPesquisa += " " + preLista.get(i);
+				}
+				//Nova palavra vai pra lista de palavras
+				palavrasDaPesquisa.add(palavraPesquisa.trim());
+			}else{
 			//Reprocessa o restante
-			palavrasDaPesquisa.addAll(preparaListaParaPesquisa_b(preLista.subList(posPrimeiraReservada, preLista.size())));
+				palavrasDaPesquisa.addAll(preparaListaParaPesquisa_b(preLista.subList(posPrimeiraReservada, preLista.size())));
+			}
 		}
 		return palavrasDaPesquisa;
 	}
