@@ -11,6 +11,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import java.util.HashMap;
 import org.springframework.util.StringUtils;
 
 public abstract class AbstractSemanticEngine {
@@ -18,7 +19,7 @@ public abstract class AbstractSemanticEngine {
 	private String textoBusca;
 	private Query query;
 	private List<String> listaDePalavrasParaPesquisa;
-	private OntModel ontologia;
+	private static OntModel ontologia;
 	List<QuerySolution> lstResultados;
 	
 
@@ -363,20 +364,40 @@ public abstract class AbstractSemanticEngine {
 	protected abstract boolean ehPalavraDeExcessao(String palavra);
 	
 	public String getResultsAsString(){
-		String parametos ="";
+		String parametros ="";
 		for(QuerySolution item: this.lstResultados){
-			if (parametos.isEmpty()){
-				parametos = item.getLiteral("parametro").toString();
+			if (parametros.isEmpty()){
+				parametros = item.getLiteral("parametro").toString();
 			}else{
-				parametos += "&" + item.getLiteral("parametro").toString();
+				parametros += "&" + item.getLiteral("parametro").toString();
 			}
 		}
-		System.out.println(parametos);
-		return parametos;
+		System.out.println(parametros);
+		return parametros;
 	}
 	
-	public Map<String, String> getResultAsParameter(){
-		return null;
+	public Map<String, List<String>> getResultAsParameter(){
+		Map<String, List<String>> lstParametros = new HashMap<String, List<String>>(); 
+                String auxString;
+                String[] lstPalavras;
+                List<String> param;
+                for(QuerySolution item: this.lstResultados){
+                    auxString = item.getLiteral("parametro").toString();
+                    if (auxString!= null && !auxString.isEmpty()){
+                        lstPalavras =  auxString.split("=");
+                        
+                        //Verifica se já não há registros do tipo do parâmetro
+                        if (lstParametros.containsKey(lstPalavras[0])){
+                            param = lstParametros.get(lstPalavras[0]);
+                        }else{
+                            param = new ArrayList<String>();
+                        }
+                        param.add(lstPalavras[1]);
+                        lstParametros.put(lstPalavras[0], param);
+                    }
+		}
+                
+                return lstParametros;
 	}
 	
 	

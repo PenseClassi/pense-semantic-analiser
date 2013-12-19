@@ -11,15 +11,20 @@ import com.hp.hpl.jena.shared.JenaException;
 public class SemanticEngineImoveis extends AbstractSemanticEngine {
 
     private static final String PREFIX_IMOVEIS = "PREFIX ont: <http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#>";
-
+    private static boolean ontologiaCarregada;
     
     
     public SemanticEngineImoveis() {
-        setOntologia(ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null));
-        try {
-            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
-        } catch (JenaException je) {
-            System.out.println(je.getMessage());
+        if (!ontologiaCarregada){
+            setOntologia(ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null));
+            try {
+                getOntologia().read("file:////C://Desenvolvimento//Workspace//trunk//produtos//imoveis//pense-imoveis//src//main//webapp//WEB-INF//Imoveis.owl", "RDF/XML");
+                ontologiaCarregada = true;
+    //            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
+            } catch (JenaException je) {
+                System.out.println(je.getMessage());
+                ontologiaCarregada = false;
+            }
         }
     }
 
