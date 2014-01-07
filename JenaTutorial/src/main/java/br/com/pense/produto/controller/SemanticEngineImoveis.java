@@ -23,11 +23,17 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                 getOntologia().read("file:////C://Desenvolvimento//Workspace//trunk//produtos//imoveis//pense-imoveis//src//main//webapp//WEB-INF//Imoveis.owl", "RDF/XML");
                 ontologiaCarregada = true;
     //            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
+                System.out.println("Ontologia de imoveis carregada.");
             } catch (JenaException je) {
                 System.out.println(je.getMessage());
                 ontologiaCarregada = false;
             }
         }
+    }
+    
+    public void start(){
+        System.out.println("Iniciando carregamento da ontologia.");
+        new SemanticEngineImoveis();
     }
 
     @Override

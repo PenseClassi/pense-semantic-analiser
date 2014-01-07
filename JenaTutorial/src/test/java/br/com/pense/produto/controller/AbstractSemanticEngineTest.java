@@ -306,29 +306,44 @@ public class AbstractSemanticEngineTest extends TestCase {
 
     
      public void testConsultaSaoFranciscoDePaulaComplexo() {
-     System.out.println("----------------------------------------------------------------------------");
-     System.out.println(">>>> testConsultaSaoFranciscoDePaulaComplexo");
-     SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
-     System.out.println("----------------------------------------------------------------------------");
-     engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com lareira, churrasqueira e play");
-     engImoveis.executeQuery();
-     //assertEquals("Infraestrutura=Playground&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-     engImoveis.getResultsAsString();
-        
-     System.out.println("----------------------------------------------------------------------------");
-     engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com 2d, lareira, churrasqueira e play");
-     engImoveis.executeQuery();
-//     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-     engImoveis.getResultsAsString();
-     
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>> testConsultaSaoFranciscoDePaulaComplexo");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com lareira, churrasqueira e play");
+        engImoveis.executeQuery();
+        //assertEquals("Infraestrutura=Playground&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
+        engImoveis.getResultsAsString();
 
-     System.out.println("----------------------------------------------------------------------------");
-     engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com dois quartos, lareira, churrasqueira e play piscina zelador");
-     engImoveis.executeQuery();
-//     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-     engImoveis.getResultsAsString();
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com 2d, lareira, churrasqueira e play");
+        engImoveis.executeQuery();
+   //     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
+        engImoveis.getResultsAsString();
+
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com dois quartos, lareira, churrasqueira e play piscina zelador");
+        engImoveis.executeQuery();
+   //     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
+        engImoveis.getResultsAsString();
      }
     
+    public void testConsultaQuarto() {
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>>  testConsultaQuarto");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("cobertura com 1 a 3 quartos");
+        engImoveis.executeQuery();
+        assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("cobertura com um a três quartos");
+        engImoveis.executeQuery();
+//        assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+    }   
     
     
     /*
@@ -4884,6 +4899,5 @@ public class AbstractSemanticEngineTest extends TestCase {
         assertEquals("{cidade=[Três Coroas], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
     }
 
-*/     
-     
+*/               
 }
