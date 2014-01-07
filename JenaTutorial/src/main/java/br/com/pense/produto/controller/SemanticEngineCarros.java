@@ -3,6 +3,7 @@ package br.com.pense.produto.controller;
 import java.util.List;
 
 import com.hp.hpl.jena.query.Query;
+import java.util.Map;
 
 public class SemanticEngineCarros extends AbstractSemanticEngine {
 
@@ -17,5 +18,9 @@ public class SemanticEngineCarros extends AbstractSemanticEngine {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+        
+        @Override
+        protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros) {
+            return null;
+        }
 }

@@ -7,6 +7,8 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.JenaException;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class SemanticEngineImoveis extends AbstractSemanticEngine {
 
@@ -42,7 +44,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                     queryString += "||";
                 }
                 queryString += "regex(?y, \"^" + palavra.toLowerCase() + "$\", \"i\")";
-//				queryString += "regex(?y, \"" + palavra + "\", \"i\")";
+//                queryString += "regex(?y, \"" + palavra + "\", \"i\")";
                 primeiraPalavra = false;
             }
             queryString += ")}";
@@ -67,5 +69,20 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         }
         return false;
     }
+    
+    @Override
+    protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros){
 
+        List<String> lstParametros = mapParametros.get("Dormitórios");
+        if (lstParametros!= null && lstParametros.size() > 1){
+            String valor1 = lstParametros.get(0).substring(lstParametros.get(0).length()-1);
+            String valor2 = lstParametros.get(1).substring(lstParametros.get(1).length()-1);
+            lstParametros = new ArrayList<String>();
+            lstParametros.add(valor1 + ":" + valor2);
+            mapParametros.put("Dormitórios", lstParametros);
+        }
+        //TODO: Banheiros - Suites - Garagem - Area Total - Area Privativa
+        
+        return mapParametros;
+    }
 }
