@@ -23,4 +23,9 @@ public class SemanticEngineCarros extends AbstractSemanticEngine {
         protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros) {
             return null;
         }
+        
+        @Override
+        protected String executaPreProcessamento(String texto){
+            return null;
+        }
 }

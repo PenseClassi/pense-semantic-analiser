@@ -445,6 +445,7 @@ public abstract class AbstractSemanticEngine {
         boolean jumpToNextWord = false;
         boolean indicacaoLugar = false;
         boolean temQuantidade = false;
+        boolean temValor = false; //TODO "R$"
         int primeiraocorrenciaNumerica = -1;
         int segundaocorrenciaNumerica = -1;
         boolean obterSegundaOcorrenciaNumerica = false;
@@ -479,15 +480,24 @@ public abstract class AbstractSemanticEngine {
                     obterSegundaOcorrenciaNumerica = false;
                 }else if (segundaocorrenciaNumerica != -1){
                     //Tendo as duas ocorrencias numericas monta as palavras e encerra a avaliação 
-                    palavrasDaPesquisa.add(preLista.get(primeiraocorrenciaNumerica) + " " + palavra);
-                    palavrasDaPesquisa.add(preLista.get(segundaocorrenciaNumerica) + " " + palavra);
+                    palavrasDaPesquisa.add(preLista.get(primeiraocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
+                    palavrasDaPesquisa.add(preLista.get(segundaocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
                     temQuantidade = false;
-                    posPrimeiraReservada = 1 + contador;
+                    if (palavra.contains(",")) {
+                        posPrimeiraReservada = contador;
+                    }else{                    
+                        posPrimeiraReservada = 1 + contador;
+                    }
+                    segundaocorrenciaNumerica = -1;
                 }else{
                     //Somente um valor - concatena direto
-                    palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + palavra);
+                    palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + palavra.replace(",", "").trim());
                     temQuantidade = false;
-                    posPrimeiraReservada = 1 + contador;
+                    if (palavra.contains(",")) {
+                        posPrimeiraReservada = contador;
+                    }else{                    
+                        posPrimeiraReservada = 1 + contador;
+                    }
                 }
                 contador++;
                 continue;
@@ -649,6 +659,7 @@ public abstract class AbstractSemanticEngine {
         palavra = palavra.toLowerCase();
         if ("bairro".equals(palavra)
                 || "cidade".equals(palavra)
+                || "região".equals(palavra)
                 || "estado".equals(palavra)) {
             return true;
         }
@@ -730,6 +741,7 @@ public abstract class AbstractSemanticEngine {
         if (!StringUtils.isEmpty(texto)) {
             try {
                 this.preparaConteudoBusca(texto);
+                this.executaPreProcessamento(texto);
                 this.executeQuery();
                 return true;
             } catch (Exception e) {
@@ -741,4 +753,5 @@ public abstract class AbstractSemanticEngine {
     
     protected abstract Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros);
 
+    protected abstract String executaPreProcessamento(String texto);
 }
