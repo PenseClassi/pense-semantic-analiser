@@ -48,12 +48,13 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             queryString += "SELECT distinct ?parametro WHERE { ?x ont:termo_pesquisa ?y. ?x ont:Nome_Parametro ?parametro FILTER(";
             boolean primeiraPalavra = true;
             for (String palavra : lstPalavras) {
-                if (!primeiraPalavra) {
-                    queryString += "||";
+                if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
+                    if (!primeiraPalavra) {
+                        queryString += "||";
+                    }                
+                    queryString += "regex(?y, \"^" + palavra.toLowerCase() + "$\", \"i\")";
+                    primeiraPalavra = false;
                 }
-                queryString += "regex(?y, \"^" + palavra.toLowerCase() + "$\", \"i\")";
-//                queryString += "regex(?y, \"" + palavra + "\", \"i\")";
-                primeiraPalavra = false;
             }
             queryString += ")}";
 
@@ -80,25 +81,72 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     
     @Override
     protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros){
-        String[] lstNomesParametros = {"Dormitórios", "Suítes"};
+        String[] lstNomesParametros = {"Dormitórios", "Suítes","Área total","Preco"};
+        String sufixo="";
         
+        List<String> lstParametros = new ArrayList<String>();
+        for (String s:this.listaDePalavrasParaPesquisa){
+//            if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
+            if(s.startsWith("R$")){
+                lstParametros = mapParametros.get("Preco");
+                if (lstParametros == null) lstParametros = new ArrayList<String>();
+               
+                lstParametros.add(s.substring(3,s.length()-3).replace(".", "").trim());
+                mapParametros.put("Preco", lstParametros);
+                
+            }else if(s.toLowerCase().endsWith(" m2") || s.endsWith(" m²") || s.toLowerCase().endsWith(" ha")){
+                sufixo= (s.toLowerCase().endsWith("ha"))? "HA":"M2";
+                lstParametros = mapParametros.get("Área total");
+                if (lstParametros == null) lstParametros = new ArrayList<String>();
+                
+                lstParametros.add(s.substring(0, s.length()-2).replace(".", "").trim());
+                mapParametros.put("Área total", lstParametros);
+            }
+        }
+        
+        //Se houver apenas uma indicação de preço, pega o intervalo de 0 até ele
+        lstParametros = mapParametros.get("Preco");
+        if (lstParametros!= null && lstParametros.size() == 1){
+            lstParametros.add("0");
+            mapParametros.put("Preco", lstParametros);
+        }
+        
+        //Se houver apenas uma indicação de área, duplica o valor para trazer um resultado "preciso"
+        lstParametros = mapParametros.get("Área total");
+        if (lstParametros!= null && lstParametros.size() == 1){
+            lstParametros.add(lstParametros.get(0));
+            mapParametros.put("Área total", lstParametros);
+        }
+        
+        String valor1, valor2 = "";
+                
         for(String s:lstNomesParametros){
-            List<String> lstParametros = mapParametros.get(s);
+            lstParametros = mapParametros.get(s);
             if (lstParametros!= null && lstParametros.size() > 1){
-//                String valor1 = lstParametros.get(0).substring(lstParametros.get(0).length()-1);
-//                String valor2 = lstParametros.get(1).substring(lstParametros.get(1).length()-1);
-                String valor1 = lstParametros.get(0).substring(0,1);
-                String valor2 = lstParametros.get(1).substring(0,1);
+                if ("Dormitórios".equals(s) || "Suítes".equals(s)){
+                    valor1 = lstParametros.get(0).substring(0,1);
+                    valor2 = lstParametros.get(1).substring(0,1);
+                }else{
+                    valor1 = lstParametros.get(0);
+                    valor2 = lstParametros.get(1);
+                }
                 lstParametros = new ArrayList<String>();
                 if (Integer.parseInt(valor1)<=Integer.parseInt(valor2)){
-                    lstParametros.add(valor1 + ":" + valor2);
+                    if ("Área total".equals(s)){
+                        lstParametros.add(valor1 + ":" + valor2+sufixo);
+                    }else{
+                        lstParametros.add(valor1 + ":" + valor2);
+                    }
                 }else{
-                    lstParametros.add(valor2 + ":" + valor1);
+                    if ("Área total".equals(s)){
+                        lstParametros.add(valor2 + ":" + valor1+sufixo);
+                    }else{
+                        lstParametros.add(valor2 + ":" + valor1);
+                    }
                 }
                 mapParametros.put(s, lstParametros);
             }
         }
-        //TODO: Banheiros - Suites - Garagem - Area Total - Area Privativa
         
         return mapParametros;
     }
@@ -115,15 +163,16 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         //o mesmo é feito com "mil (valores)"
         pattern = Pattern.compile("(R\\$)\\s?\\d+\\s?(mil)");
         matcher = pattern.matcher(texto);
-        if (matcher.find()){
+        while (matcher.find()){
             //Recria-se o texto original com o "mil" do texto identificado substituida
             texto = texto.substring(0, matcher.start()) + matcher.group().replaceAll("\\s?mil", ".000,00") + texto.substring(matcher.end());
+            matcher = pattern.matcher(texto);
         }
         
         //o mesmo é feito com "mil"
-        pattern = Pattern.compile("\\s?mil");
+        pattern = Pattern.compile("\\s?mil\\s");
         matcher = pattern.matcher(texto);
-        texto = matcher.replaceAll(".000");
+        texto = matcher.replaceAll(".000 ");
 
 
         //área em metros quadrados
@@ -132,6 +181,78 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         texto = matcher.replaceAll(" m2");
         
         System.out.println(texto);
+        return defineConjuntoExpressoes(texto.trim());
+    }
+    
+    private String defineConjuntoExpressoes(String texto){
+        // {Área m2}
+        String[] lstExpressoes = {"[\\d\\.]+\\s?(m2|m²)"};
+        Pattern pattern;
+        Matcher matcher;
+        
+        for (String expressao: lstExpressoes){
+            //Marca definições de área
+            pattern = Pattern.compile(expressao);
+            matcher = pattern.matcher(texto);
+            
+            StringBuffer sb = new StringBuffer();
+            while (matcher.find()) {
+                matcher.appendReplacement(sb, "\"" + matcher.group() + "\"");
+            }
+            matcher.appendTail(sb);
+            texto = sb.toString();
+        }
+        
+        //Dinheiro tem tratamento diferenciado - Normalização utiliza R$ e ,
+        pattern = Pattern.compile("(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})|(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*)|(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})");
+        matcher = pattern.matcher(texto);
+        
+        StringBuffer sb = new StringBuffer();
+        boolean found = false;
+        String auxString = "";
+        while (matcher.find()) {
+            auxString = texto.substring(matcher.start(), matcher.end());
+            if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
+            if (!auxString.contains(",")) auxString += ",00";
+            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
+            matcher.appendReplacement(sb, "\"" + auxString + "\"");
+            found = true;
+        }
+        if (found){
+            matcher.appendTail(sb);
+            texto = sb.toString();
+        }
+        
+        //Tratamento para termos: n [e|a|ou|ate] m xxxxxxx
+        pattern = Pattern.compile("((\\d)\\s(e|a|(ou)|(até))\\s)?(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
+        matcher = pattern.matcher(texto);
+        
+        sb = new StringBuffer();
+        found = false;
+        auxString = "";
+        while (matcher.find()) {
+            String val1 = matcher.group(2);
+            String val2 = matcher.group(6);
+            String elemento = matcher.group(7);
+            
+            if (val1 != null){
+                auxString = "\"" + val1 + " " + elemento + "\", \"" + val2 + " " + elemento + "\"";
+            }else{
+                auxString = "\"" + val2 + " " + elemento + "\"";
+            }
+//            if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
+//            if (!auxString.contains(",")) auxString += ",00";
+//            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
+            matcher.appendReplacement(sb, auxString);
+            found = true;
+        }
+        if (found){
+            matcher.appendTail(sb);
+            texto = sb.toString();
+        }
+        
+        
         return texto.trim();
     }
+
 }
