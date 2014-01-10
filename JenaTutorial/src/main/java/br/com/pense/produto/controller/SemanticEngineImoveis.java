@@ -81,20 +81,21 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     
     @Override
     protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros){
-        String[] lstNomesParametros = {"Dormitórios", "Suítes","Área total","Preco"};
+        String[] lstNomesParametros = {"Dormitórios", "Suítes","Área total","Preço"};
         String sufixo="";
         
         List<String> lstParametros = new ArrayList<String>();
         for (String s:this.listaDePalavrasParaPesquisa){
 //            if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
             if(s.startsWith("R$")){
-                lstParametros = mapParametros.get("Preco");
+                lstParametros = mapParametros.get("Preço");
                 if (lstParametros == null) lstParametros = new ArrayList<String>();
                
                 lstParametros.add(s.substring(3,s.length()-3).replace(".", "").trim());
-                mapParametros.put("Preco", lstParametros);
+                mapParametros.put("Preço", lstParametros);
                 
-            }else if(s.toLowerCase().endsWith(" m2") || s.endsWith(" m²") || s.toLowerCase().endsWith(" ha")){
+            }else if(s.toLowerCase().matches("[\\d\\.]+(m2|ha)")){    
+//            }else if(s.toLowerCase().endsWith(" m2") || s.endsWith(" m²") || s.toLowerCase().endsWith(" ha")){
                 sufixo= (s.toLowerCase().endsWith("ha"))? "HA":"M2";
                 lstParametros = mapParametros.get("Área total");
                 if (lstParametros == null) lstParametros = new ArrayList<String>();
@@ -105,10 +106,10 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         }
         
         //Se houver apenas uma indicação de preço, pega o intervalo de 0 até ele
-        lstParametros = mapParametros.get("Preco");
+        lstParametros = mapParametros.get("Preço");
         if (lstParametros!= null && lstParametros.size() == 1){
             lstParametros.add("0");
-            mapParametros.put("Preco", lstParametros);
+            mapParametros.put("Preço", lstParametros);
         }
         
         //Se houver apenas uma indicação de área, duplica o valor para trazer um resultado "preciso"
@@ -147,13 +148,12 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                 mapParametros.put(s, lstParametros);
             }
         }
-        
+        System.out.println(mapParametros.toString());
         return mapParametros;
     }
     
     @Override
     protected String executaPreProcessamento(String texto) {
-        System.out.println(texto);
         //Valores descritos como "milhão" ou "milhões" são substituidos pelos números
         Pattern pattern = Pattern.compile("\\s?milh[ões|ão]+");
         Matcher matcher = pattern.matcher(texto);
@@ -176,16 +176,46 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
 
 
         //área em metros quadrados
-        pattern = Pattern.compile("\\s?metros quadrados");
+        pattern = Pattern.compile("\\s?(metros quadrados|m²)");
         matcher = pattern.matcher(texto);
-        texto = matcher.replaceAll(" m2");
+        texto = matcher.replaceAll("m2");
         
-        System.out.println(texto);
         return defineConjuntoExpressoes(texto.trim());
     }
     
+    /*
+    Normaliza a informação do texto para facilitar o processo de consulta na ontologia
+    */
     private String defineConjuntoExpressoes(String texto){
-        // {Área m2}
+//        Pattern pattern;
+//        Matcher matcher;
+//        
+        StringBuffer sb = new StringBuffer();
+        boolean found = false;
+        String auxString = "";
+//        
+//        // {Área m2}        
+//        pattern = Pattern.compile("[\\d\\.]+\\s?(m2|m²)");
+//        matcher = pattern.matcher(texto);
+//
+//        while (matcher.find()) {
+//            auxString = matcher.group();
+//            int tamAuxString = auxString.length();
+//            if (!auxString.substring(tamAuxString-3, tamAuxString-2).equals(" ")){ 
+//                auxString = auxString.substring(0, tamAuxString-2)+" m2";
+//            }
+//           
+//            matcher.appendReplacement(sb, "\"" + auxString + "\"");
+//            found = true;
+//        }
+//        if (found){
+//            matcher.appendTail(sb);
+//            texto = sb.toString();
+//        }
+//        sb = new StringBuffer();
+//        found = false;
+//        auxString = "";
+        
         String[] lstExpressoes = {"[\\d\\.]+\\s?(m2|m²)"};
         Pattern pattern;
         Matcher matcher;
@@ -195,9 +225,10 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             pattern = Pattern.compile(expressao);
             matcher = pattern.matcher(texto);
             
-            StringBuffer sb = new StringBuffer();
+            sb = new StringBuffer();
             while (matcher.find()) {
-                matcher.appendReplacement(sb, "\"" + matcher.group() + "\"");
+//                matcher.appendReplacement(sb, "\"" + matcher.group().replace(" ", "") + "\"");
+                matcher.appendReplacement(sb, matcher.group().replace(" ", "") );
             }
             matcher.appendTail(sb);
             texto = sb.toString();
@@ -207,14 +238,19 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         pattern = Pattern.compile("(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})|(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*)|(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})");
         matcher = pattern.matcher(texto);
         
-        StringBuffer sb = new StringBuffer();
-        boolean found = false;
-        String auxString = "";
+        sb = new StringBuffer();
+        auxString = "";
+        
         while (matcher.find()) {
             auxString = texto.substring(matcher.start(), matcher.end());
             if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
             if (!auxString.contains(",")) auxString += ",00";
-            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
+            
+            if (auxString.substring(2, 3).equals(" ")){ 
+                auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
+            }else{
+                auxString = auxString.replace("R$", "R\\$ "); //$ Tem de ser escapado
+            }
             matcher.appendReplacement(sb, "\"" + auxString + "\"");
             found = true;
         }
@@ -225,6 +261,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         
         //Tratamento para termos: n [e|a|ou|ate] m xxxxxxx
         pattern = Pattern.compile("((\\d)\\s(e|a|(ou)|(até))\\s)?(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
+//        pattern = Pattern.compile("(\\s(\\d)\\s(e|a|(ou)|(até)))?\\s(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
         matcher = pattern.matcher(texto);
         
         sb = new StringBuffer();
@@ -234,17 +271,18 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             String val1 = matcher.group(2);
             String val2 = matcher.group(6);
             String elemento = matcher.group(7);
-            
-            if (val1 != null){
-                auxString = "\"" + val1 + " " + elemento + "\", \"" + val2 + " " + elemento + "\"";
-            }else{
-                auxString = "\"" + val2 + " " + elemento + "\"";
+            if (!ehPalavraLigacao(elemento)){
+                if (val1 != null){
+                    auxString = "\"" + val1 + " " + elemento + "\", \"" + val2 + " " + elemento + "\"";
+                }else{
+                    auxString = "\"" + val2 + " " + elemento + "\"";
+                }
+    //            if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
+    //            if (!auxString.contains(",")) auxString += ",00";
+    //            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
+                matcher.appendReplacement(sb, auxString);
+                found = true;
             }
-//            if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
-//            if (!auxString.contains(",")) auxString += ",00";
-//            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
-            matcher.appendReplacement(sb, auxString);
-            found = true;
         }
         if (found){
             matcher.appendTail(sb);

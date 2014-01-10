@@ -140,7 +140,7 @@ public abstract class AbstractSemanticEngine {
             //Remove as palavras reservadas - as que não entram na pesquisa
             for (String palavra : lstPalavras) {
                 if (!ehPalavraReservada(palavra)) {
-                    listaAuxiliarDePalavras.add(palavra);
+                    listaAuxiliarDePalavras.add(palavra.trim());
                 }
             }
             this.listaDePalavrasParaPesquisa = preparaListaParaPesquisa_d(listaAuxiliarDePalavras);
@@ -159,11 +159,11 @@ public abstract class AbstractSemanticEngine {
         List<String> palavrasDaPesquisa = new ArrayList<String>();
         boolean jumpToNextWord = false;
         boolean indicacaoLugar = false;
-        boolean temQuantidade = false;
-        boolean temValor = false;
-        int primeiraocorrenciaNumerica = -1;
-        int segundaocorrenciaNumerica = -1;
-        boolean obterSegundaOcorrenciaNumerica = false;
+//        boolean temQuantidade = false;
+//        boolean temValor = false;
+//        int primeiraocorrenciaNumerica = -1;
+//        int segundaocorrenciaNumerica = -1;
+//        boolean obterSegundaOcorrenciaNumerica = false;
 
         boolean aspasDetectadas = false;
         int posPrimeiraAspa = -1;
@@ -181,6 +181,19 @@ public abstract class AbstractSemanticEngine {
                 //Marca a primeira aspas detectada
                 aspasDetectadas = true;
                 posPrimeiraAspa = contador;
+                //Precisa pegar as palavras entre posPrimeiraReservada e posPrimeiraAspa
+                if (posPrimeiraReservada > -1){
+                    String novaPalavra = "";
+                    for (int i = posPrimeiraReservada+1; i < posPrimeiraAspa; i++) {
+                        //Concatenando as palavras do intervalo
+                        novaPalavra += " " + preLista.get(i);
+                    }
+                    if (!novaPalavra.isEmpty()){
+                        palavrasDaPesquisa.add(novaPalavra.trim());
+                    }
+                    indicacaoLugar = false; //Se havia indicação de lugar reseta
+                }
+                
             } else if (aspasDetectadas && (palavra.endsWith("\"")|| palavra.endsWith("\","))) {
                 //Na segunda obtem o texto entre as aspas
                 String novaPalavra = "";
@@ -202,73 +215,6 @@ public abstract class AbstractSemanticEngine {
                 aspasDetectadas = false;
                 
             } else {
-
-//                //Identifica informação de que tem um valor especificado
-//                if ("R$".equals(palavra)) {
-//                    temValor = true;
-//                    posPrimeiraReservada = contador;
-//                    contador++;
-//                    continue;
-//                } else if (defineValorMoeda(palavra)) { //Detectou especificação de valor (moeda)
-//                    String auxPalavra = palavra;
-//                    if (auxPalavra.endsWith(",")) {
-//                        auxPalavra = auxPalavra.substring(0, auxPalavra.length() - 1);
-//                    }
-//                    if (temValor) { //Já havia detectado a referencia a um valor
-//                        palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + auxPalavra);
-//                    } else { //Sem a referencia informa uma (valor em reais) 
-//                        palavrasDaPesquisa.add("R$ " + auxPalavra);
-//                    }
-//                    posPrimeiraReservada = contador;
-//                    temValor = false;
-//                    contador++;
-//                    continue;
-//                }
-//
-//                // Verifica se a palavra define uma quantidade
-//                if (!temQuantidade && defineQuantidade(palavra)) {
-//                    temQuantidade = true;
-//                    primeiraocorrenciaNumerica = contador;
-//                    posPrimeiraReservada = contador;
-//                    contador++;
-//                    continue;
-//                }
-//
-//            // Pega os valores e monta as relações de quantidades
-//                // n [e|a|até] m {elemento}
-//                // n {elemento}
-//                if (temQuantidade) {
-//                    if ("e".equals(palavra) || "a".equals(palavra) || "até".equals(palavra)) {
-//                        //Intervalo de valores - define que tem de obter segunda ocorrencia numerica
-//                        obterSegundaOcorrenciaNumerica = true;
-//                    } else if (obterSegundaOcorrenciaNumerica) {
-//                        //Obtem a segunda ocorrencia numerica
-//                        segundaocorrenciaNumerica = contador;
-//                        obterSegundaOcorrenciaNumerica = false;
-//                    } else if (segundaocorrenciaNumerica != -1) {
-//                        //Tendo as duas ocorrencias numericas monta as palavras e encerra a avaliação 
-//                        palavrasDaPesquisa.add(preLista.get(primeiraocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
-//                        palavrasDaPesquisa.add(preLista.get(segundaocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
-//                        temQuantidade = false;
-//                        if (palavra.contains(",")) {
-//                            posPrimeiraReservada = contador;
-//                        } else {
-//                            posPrimeiraReservada = 1 + contador;
-//                        }
-//                        segundaocorrenciaNumerica = -1;
-//                    } else {
-//                        //Somente um valor - concatena direto
-//                        palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + palavra.replace(",", "").trim());
-//                        temQuantidade = false;
-//                        if (palavra.contains(",")) {
-//                            posPrimeiraReservada = contador;
-//                        } else {
-//                            posPrimeiraReservada = 1 + contador;
-//                        }
-//                    }
-//                    contador++;
-//                    continue;
-//                }
 
                 if (ehPalavraLigacao(palavra)) {
 
@@ -596,16 +542,19 @@ public abstract class AbstractSemanticEngine {
      * @return Verdadeiro se a palavra for de ligação
      */
 
-    private boolean ehPalavraLigacao(String palavra) {
+    protected boolean ehPalavraLigacao(String palavra) {
         if (palavra != null) {
             palavra = palavra.toLowerCase();
 
             if ("em".equals(palavra)
                     || "na".equals(palavra)
+                    || "ou".equals(palavra)
+                    || "até".equals(palavra)
                     || "no".equals(palavra)
                     || "de".equals(palavra)
                     || "com".equals(palavra)
                     || "e".equals(palavra)
+                    || "apartir".equals(palavra)
                     || "para".equals(palavra)) {
                 return true;
             }
@@ -738,7 +687,6 @@ public abstract class AbstractSemanticEngine {
     public boolean obtemParametros(String texto) {
         if (!StringUtils.isEmpty(texto)) {
             try {
-                this.executaPreProcessamento(texto);
                 this.preparaConteudoBusca(texto);                
                 this.executeQuery();
                 return true;

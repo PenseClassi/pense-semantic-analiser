@@ -208,141 +208,144 @@ public class AbstractSemanticEngineTest extends TestCase {
 //        assertEquals("{cidade=[Porto Alegre]}", engImoveis.getResultsAsString());
 //    }
 
-//    public void testConsultaOntologiaBaseadaEmDadosPenseHardQuartos() {
-//        System.out.println("----------------------------------------------------------------------------");
-//        System.out.println(">>>> testConsultaOntologiaBaseadaEmDadosPenseHardQuartos");
-//        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("Apartamento 1 dormitorio Porto Alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 1 e 2 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 2 e 3 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 3 e 2 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 1, 2 e 3 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa de madeira 3 e 2 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa de madeira 3d e 2d em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 2 dormitórios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 2 dormitorios porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("1 dormitorio em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 3 dormitórios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 2 e 3 dormitorios em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("Casas 1 e 2 dormitórios em Joinville");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("2 dormitorios com garagem em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento mobiliado em porto alegre 2 dormitorios rs");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa 3 quartos em porto alegre");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("apartamento 2 quartos");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
+    public void testConsultaOntologiaBaseadaEmDadosPenseHardQuartos() {
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>> testConsultaOntologiaBaseadaEmDadosPenseHardQuartos");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+
+        System.out.println("-*--------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("Apartamento 1 dormitorio Porto Alegre");
+        engImoveis.executeQuery();
+        engImoveis.getResultsAsString();        
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 1 e 2 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[1:2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 2 e 3 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:3], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 3 e 2 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:3], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
+
+        System.out.println("-*--------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 1, 2 e 3 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        engImoveis.getResultsAsString();
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa de madeira 3 e 2 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:3], Tipo de imóvel=[Casa de madeira]}", engImoveis.getResultsAsString());
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa de madeira 3d e 2d em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:3], Tipo de imóvel=[Casa de madeira]}", engImoveis.getResultsAsString());
+
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 2 dormitórios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());  
+        
+        System.out.println("-*--------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 2 dormitorios porto alegre");
+        engImoveis.executeQuery();
+        engImoveis.getResultsAsString();
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("1 dormitorio em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[1:1]}", engImoveis.getResultsAsString()); 
+      
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 3 dormitórios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[3:3], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());   
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 2 e 3 dormitorios em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:3], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());  
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("Casas 1 e 2 dormitórios em Joinville");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Joinville], Dormitórios=[1:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());      
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("2 dormitorios com garagem em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[2:2], Vagas de garagem=[1:]}", engImoveis.getResultsAsString());       
+         
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento mobiliado em porto alegre 2 dormitorios rs");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], estado=[rio grande do sul], Características=[Mobiliado], Dormitórios=[2:2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString()); 
+        
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa 3 quartos em porto alegre");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[Porto Alegre], Dormitórios=[3:3], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("apartamento 2 quartos");
+        engImoveis.executeQuery();
+        assertEquals("{Dormitórios=[2:2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());  
+        
+//        System.out.println("-*--------------------------------------------------------------------------");
 //        engImoveis.preparaConteudoBusca("apartamento de 01 dormitório em porto alegre");
 //        engImoveis.executeQuery();
 //        engImoveis.getResultsAsString();
-//    }
+    }
 
     
-//     public void testConsultaSaoFranciscoDePaulaComplexo() {
-//        System.out.println("----------------------------------------------------------------------------");
-//        System.out.println(">>>> testConsultaSaoFranciscoDePaulaComplexo");
-//        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com lareira, churrasqueira e play");
-//        engImoveis.executeQuery();
-//        //assertEquals("Infraestrutura=Playground&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com 2d, lareira, churrasqueira e play");
-//        engImoveis.executeQuery();
-//   //     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-//        engImoveis.getResultsAsString();
-//
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com dois quartos, lareira, churrasqueira e play piscina zelador");
-//        engImoveis.executeQuery();
-//   //     assertEquals("Infraestrutura=Playground&Dormitórios=2:2&Tipo de imóvel=Casa&Características=Churrasqueira&cidade=São Francisco de Paula&Características=Lareira", engImoveis.getResultsAsString());
-//        engImoveis.getResultsAsString();
-//     }
+     public void testConsultaSaoFranciscoDePaulaComplexo() {
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>> testConsultaSaoFranciscoDePaulaComplexo");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com lareira, churrasqueira e play");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Churrasqueira, Lareira], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com 2d, lareira, churrasqueira e play");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Churrasqueira, Lareira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+
+
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com dois quartos, lareira, churrasqueira e play piscina zelador");
+        engImoveis.executeQuery();
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Piscina, Playground, Zelador], Características=[Churrasqueira, Lareira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+
+     }
     
-//    public void testConsultaQuarto() {
-//        System.out.println("----------------------------------------------------------------------------");
-//        System.out.println(">>>>  testConsultaQuarto");
-//        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
-//        
-//        System.out.println("----------------------------------------------------------------------------");
-//        engImoveis.preparaConteudoBusca("cobertura com 1 a 3 quartos");
-//        engImoveis.executeQuery();
-//        assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
-//        
+    public void testConsultaQuarto() {
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>>  testConsultaQuarto");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+        
+        System.out.println("----------------------------------------------------------------------------");
+        engImoveis.preparaConteudoBusca("cobertura com 1 a 3 quartos");
+        engImoveis.executeQuery();
+        assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
 //        System.out.println("----------------------------------------------------------------------------");
 //        engImoveis.preparaConteudoBusca("cobertura com um a três quartos");
 //        engImoveis.executeQuery();
-//        assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
-//    }   
+//        //assertEquals("{Dormitórios=[1:3], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+//        engImoveis.getResultsAsString();
+    }   
     
     public void testBanheiroSuiteQuarto(){
         
@@ -4920,6 +4923,11 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.preparaConteudoBusca("cobertura com dormitorios, suites, banheiros com garagem piscina churrasqueira");
         engImoveis.executeQuery();
         assertEquals("{Banheiros=[1:], Infraestrutura=[Piscina], Características=[Churrasqueira], Dormitórios=[1:5], Suítes=[1:5], Vagas de garagem=[1:], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("2 a 3 dormitorios, 2 a 3 suites, banheiro com garagem piscina churrasqueira");
+        engImoveis.executeQuery();
+        assertEquals("{Banheiros=[1:], Infraestrutura=[Piscina], Características=[Churrasqueira], Dormitórios=[2:3], Suítes=[2:3], Vagas de garagem=[1:]}", engImoveis.getResultsAsString());  
+        
     }
     
     public void testMetragemExtenso(){
@@ -4932,31 +4940,31 @@ public class AbstractSemanticEngineTest extends TestCase {
 
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil com piscina");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil com piscina");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura entre 3 milhões e 4 milhões, com sacada");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[3000000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura entre 3 milhões e 4 milhões com sacada");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[3000000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil até 4 milhões com sacada");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[3000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("apartamento com 2mil metros quadrados");
         engImoveis.executeQuery();
@@ -4964,11 +4972,96 @@ public class AbstractSemanticEngineTest extends TestCase {
         
         engImoveis.preparaConteudoBusca("apartamento com 2mil metros quadrados apartir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[0:3000], Área total=[2000:2000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[0:3000], Área total=[2000:2000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil até R$ 5mil");
         engImoveis.executeQuery();
-        assertEquals("{Preco=[3000:5000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:5000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());  
+        
+        engImoveis.preparaConteudoBusca("apartamento de R$300.000 a R$ 400.000,00");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[300000:400000], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString()); 
     }
     
+    public void testMetrosQuadrados(){
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>> testMetrosQuadrados");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();  
+        
+        engImoveis.preparaConteudoBusca("apartamento com 25m2 apartir de R$ 3 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        
+        engImoveis.preparaConteudoBusca("apartamento com 25 m2 apartir de R$ 3 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        
+        engImoveis.preparaConteudoBusca("apartamento com 25 m² apartir de R$ 3 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        
+        engImoveis.preparaConteudoBusca("apartamento com 25m² apartir de R$ 3 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        
+        engImoveis.obtemParametros("apartamento com 25m² apartir de R$ 3 mil");
+        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        
+                 
+    }
+//    public void testIntervalosValores() {
+//        System.out.println("----------------------------------------------------------------------------");
+//        System.out.println(">>>>  testIntervalosValores");
+//        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+//        engImoveis.preparaConteudoBusca("cobertura com 2 ou mais dormitorios");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());
+//        
+//
+//        engImoveis.preparaConteudoBusca("cobertura com até 2 dormitorios");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());
+//        
+//        engImoveis.preparaConteudoBusca("cobertura com até 25 m2");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());
+//        
+//        engImoveis.preparaConteudoBusca("cobertura com até 25m2");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());
+//        
+//        engImoveis.preparaConteudoBusca("apartamento até R$ 2.000.000,00");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());
+//        
+//        engImoveis.preparaConteudoBusca("apartamento acima de R$ 2.000.000,00");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());     
+//        
+//        engImoveis.preparaConteudoBusca("apartamento abaixo de R$ 2.000.000,00");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());      
+//        
+//        engImoveis.preparaConteudoBusca("apartamento acima de 25m2");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());     
+//        
+//        engImoveis.preparaConteudoBusca("apartamento abaixo de 25m2");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());        
+//
+//        engImoveis.preparaConteudoBusca("apartamento abaixo de 25m2");
+//        engImoveis.executeQuery();
+//        engImoveis.getResultsAsString();
+////        assertEquals("", engImoveis.getResultsAsString());          
+//    }
 }
