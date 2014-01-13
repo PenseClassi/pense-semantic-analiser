@@ -83,17 +83,24 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     protected Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros){
         String[] lstNomesParametros = {"Dormitórios", "Suítes","Área total","Preço"};
         String sufixo="";
+        Boolean somentePrimeiroParametro = false;
+        Boolean ignoraPrimeiroParametro = false;
         
         List<String> lstParametros = new ArrayList<String>();
         for (String s:this.listaDePalavrasParaPesquisa){
 //            if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
             if(s.startsWith("R$")){
-                lstParametros = mapParametros.get("Preço");
-                if (lstParametros == null) lstParametros = new ArrayList<String>();
-               
-                lstParametros.add(s.substring(3,s.length()-3).replace(".", "").trim());
-                mapParametros.put("Preço", lstParametros);
-                
+                if (s.equals("R$ 0,01")){ 
+                    somentePrimeiroParametro = true;
+                }else if ("R$ 0,00".equals(s)){
+                    ignoraPrimeiroParametro = true;
+                }else{
+                    lstParametros = mapParametros.get("Preço");
+                    if (lstParametros == null) lstParametros = new ArrayList<String>();
+
+                    lstParametros.add(s.substring(3,s.length()-3).replace(".", "").trim());
+                    mapParametros.put("Preço", lstParametros);
+                }
             }else if(s.toLowerCase().matches("[\\d\\.]+(m2|ha)")){    
 //            }else if(s.toLowerCase().endsWith(" m2") || s.endsWith(" m²") || s.toLowerCase().endsWith(" ha")){
                 sufixo= (s.toLowerCase().endsWith("ha"))? "HA":"M2";
@@ -108,8 +115,19 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         //Se houver apenas uma indicação de preço, pega o intervalo de 0 até ele
         lstParametros = mapParametros.get("Preço");
         if (lstParametros!= null && lstParametros.size() == 1){
-            lstParametros.add("0");
-            mapParametros.put("Preço", lstParametros);
+            if (somentePrimeiroParametro){
+                String param = lstParametros.get(0);
+                lstParametros.clear();
+                lstParametros.add(param+":");
+            }else if (ignoraPrimeiroParametro){
+                String param = lstParametros.get(0);
+                lstParametros.clear();
+                lstParametros.add(":"+param);
+            }else{
+                lstParametros.add("0");
+                
+            }
+            mapParametros.put("Preço", lstParametros);            
         }
         
         //Se houver apenas uma indicação de área, duplica o valor para trazer um resultado "preciso"
@@ -126,10 +144,10 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             if (lstParametros!= null && lstParametros.size() > 1){
                 if ("Dormitórios".equals(s) || "Suítes".equals(s)){
                     valor1 = lstParametros.get(0).substring(0,1);
-                    valor2 = lstParametros.get(1).substring(0,1);
+                    valor2 = lstParametros.get(lstParametros.size()-1).substring(0,1);
                 }else{
                     valor1 = lstParametros.get(0);
-                    valor2 = lstParametros.get(1);
+                    valor2 = lstParametros.get(lstParametros.size()-1);
                 }
                 lstParametros = new ArrayList<String>();
                 if (Integer.parseInt(valor1)<=Integer.parseInt(valor2)){
@@ -179,6 +197,58 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         pattern = Pattern.compile("\\s?(metros quadrados|m²)");
         matcher = pattern.matcher(texto);
         texto = matcher.replaceAll("m2");
+        
+        //Quando tem "a partir de"
+        pattern = Pattern.compile("\\s((a partir de)|(acima de)|(abaixo de)|(até)|(de))\\s(R\\$\\s)?([\\d\\.\\,]+)\\s?(m2)?");
+        matcher = pattern.matcher(texto);
+        
+        String auxString = "";
+        StringBuffer sb = new StringBuffer();
+        Boolean found = false;
+
+        String val1, dinheiro, valor, metragem = "";
+        while (matcher.find()) {
+            auxString = "";
+            val1 = matcher.group(1);
+            if (val1 != null){ //um termo foi encontrado
+                dinheiro = matcher.group(7);
+                valor = matcher.group(8);
+                metragem = matcher.group(9);
+                
+                if ("até".equals(val1) || "abaixo de".equals(val1)){
+                    if (dinheiro != null){
+                        auxString = " R\\$ 0,00, R\\$ " + valor + " ";
+                    }else if (metragem != null){
+                        auxString = " 10" + metragem + ", " + valor + metragem + " ";
+                    }else{
+                        auxString = " 0,00, " + valor + " ";
+                    }
+                }else if("a partir de".equals(val1) || "acima de".equals(val1)){
+                    if (dinheiro != null){
+                        auxString = " R\\$ 0,01,  R\\$ " + valor + " ";
+                    }else if (metragem != null){
+                        auxString = " 1000" + metragem + ", " + valor + metragem + " ";
+                    }else{
+                        auxString = " 0,01, " + valor + " ";
+                    }
+                }else if("de".equals(val1)){
+                    if (dinheiro != null){
+                        auxString = " R\\$ " + valor + ",  R\\$ " + valor + " ";
+                    }else if (metragem != null){
+                        auxString = " "+ valor + metragem + ", " + valor + metragem + " ";
+                    }
+                }
+                
+                if (!auxString.isEmpty()){
+                    matcher.appendReplacement(sb, auxString);
+                    found = true;
+                }
+            }
+        }
+        if (found){
+            matcher.appendTail(sb);
+            texto = sb.toString();
+        }
         
         return defineConjuntoExpressoes(texto.trim());
     }
@@ -260,7 +330,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         }
         
         //Tratamento para termos: n [e|a|ou|ate] m xxxxxxx
-        pattern = Pattern.compile("((\\d)\\s(e|a|(ou)|(até))\\s)?(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
+        pattern = Pattern.compile("((\\d)\\s(e|a|(ou)|(até))\\s)?(\\d|(mais)|(menos))\\s((vagas de garagem)|[\\wÀ-ú]+)");
 //        pattern = Pattern.compile("(\\s(\\d)\\s(e|a|(ou)|(até)))?\\s(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
         matcher = pattern.matcher(texto);
         
@@ -270,16 +340,15 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         while (matcher.find()) {
             String val1 = matcher.group(2);
             String val2 = matcher.group(6);
-            String elemento = matcher.group(7);
+            if("mais".equals(val2)) val2 = "5"; //Se o parâmtro for "mais" troca por 5
+            if("menos".equals(val2)) val2 = "1"; //Se o parâmtro for "menos" troca por 1
+            String elemento = matcher.group(9);
             if (!ehPalavraLigacao(elemento)){
                 if (val1 != null){
                     auxString = "\"" + val1 + " " + elemento + "\", \"" + val2 + " " + elemento + "\"";
                 }else{
                     auxString = "\"" + val2 + " " + elemento + "\"";
                 }
-    //            if (!auxString.startsWith("R$")) auxString = "R$ " + auxString;
-    //            if (!auxString.contains(",")) auxString += ",00";
-    //            auxString = auxString.replace("R$", "R\\$"); //$ Tem de ser escapado
                 matcher.appendReplacement(sb, auxString);
                 found = true;
             }

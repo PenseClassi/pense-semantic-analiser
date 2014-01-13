@@ -4936,23 +4936,19 @@ public class AbstractSemanticEngineTest extends TestCase {
         
         engImoveis.preparaConteudoBusca("apartamento com 2mil metros quadrados ou 3mil metros quadrados");
         engImoveis.executeQuery();
-        assertEquals("{Área total=[2000:3000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
-
-        engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil");
-        engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Área total=[2000:3000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());       
         
-        engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("cobertura de R$ 300 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[300000:300000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil com piscina");
+        engImoveis.preparaConteudoBusca("cobertura a partir de R$ 3mil com piscina");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil com piscina");
+        engImoveis.preparaConteudoBusca("cobertura a partir de R$ 3 mil com piscina");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Infraestrutura=[Piscina], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura entre 3 milhões e 4 milhões, com sacada");
         engImoveis.executeQuery();
@@ -4962,7 +4958,11 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.executeQuery();
         assertEquals("{Preço=[3000000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3 mil até 4 milhões com sacada");
+        engImoveis.preparaConteudoBusca("cobertura de R$ 3 mil até 4 milhões com sacada");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[3000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+        
+        engImoveis.preparaConteudoBusca("cobertura de R$ 3 mil até R$ 4 milhões com sacada");
         engImoveis.executeQuery();
         assertEquals("{Preço=[3000:4000000], Características=[Sacada], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
         
@@ -4970,9 +4970,9 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.executeQuery();
         assertEquals("{Área total=[2000:2000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("apartamento com 2mil metros quadrados apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("apartamento com 2mil metros quadrados a partir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Área total=[2000:2000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Área total=[2000:2000M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
         engImoveis.preparaConteudoBusca("cobertura apartir de R$ 3mil até R$ 5mil");
         engImoveis.executeQuery();
@@ -4988,80 +4988,71 @@ public class AbstractSemanticEngineTest extends TestCase {
         System.out.println(">>>> testMetrosQuadrados");
         SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();  
         
-        engImoveis.preparaConteudoBusca("apartamento com 25m2 apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("apartamento com 25m2 a partir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("apartamento com 25 m2 apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("apartamento com 25 m2 a partir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("apartamento com 25 m² apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("apartamento com 25 m² a partir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
-        engImoveis.preparaConteudoBusca("apartamento com 25m² apartir de R$ 3 mil");
+        engImoveis.preparaConteudoBusca("apartamento com 25m² a partir de R$ 3 mil");
         engImoveis.executeQuery();
-        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        assertEquals("{Preço=[3000:], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
-        engImoveis.obtemParametros("apartamento com 25m² apartir de R$ 3 mil");
-        assertEquals("{Preço=[0:3000], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
+        engImoveis.obtemParametros("apartamento com 25m² a partir de R$ 3 mil");
+        assertEquals("{Preço=[3000:], Área total=[25:25M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());        
         
                  
     }
-//    public void testIntervalosValores() {
-//        System.out.println("----------------------------------------------------------------------------");
-//        System.out.println(">>>>  testIntervalosValores");
-//        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
-//        engImoveis.preparaConteudoBusca("cobertura com 2 ou mais dormitorios");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());
-//        
-//
-//        engImoveis.preparaConteudoBusca("cobertura com até 2 dormitorios");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());
-//        
-//        engImoveis.preparaConteudoBusca("cobertura com até 25 m2");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());
-//        
-//        engImoveis.preparaConteudoBusca("cobertura com até 25m2");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());
-//        
-//        engImoveis.preparaConteudoBusca("apartamento até R$ 2.000.000,00");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());
-//        
-//        engImoveis.preparaConteudoBusca("apartamento acima de R$ 2.000.000,00");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());     
-//        
-//        engImoveis.preparaConteudoBusca("apartamento abaixo de R$ 2.000.000,00");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());      
-//        
-//        engImoveis.preparaConteudoBusca("apartamento acima de 25m2");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());     
-//        
-//        engImoveis.preparaConteudoBusca("apartamento abaixo de 25m2");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());        
-//
-//        engImoveis.preparaConteudoBusca("apartamento abaixo de 25m2");
-//        engImoveis.executeQuery();
-//        engImoveis.getResultsAsString();
-////        assertEquals("", engImoveis.getResultsAsString());          
-//    }
+    public void testIntervalosValores() {
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(">>>>  testIntervalosValores");
+        SemanticEngineImoveis engImoveis = new SemanticEngineImoveis();
+        engImoveis.preparaConteudoBusca("cobertura com 2 ou mais dormitorios");
+        engImoveis.executeQuery();
+        assertEquals("{Dormitórios=[2:5], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("cobertura com 2 ou menos dormitorios");
+        engImoveis.executeQuery();
+        assertEquals("{Dormitórios=[1:2], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("cobertura a partir de R$ 300 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[300000:], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("cobertura acima de R$ 300 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[300000:], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("cobertura acima de 300.000,00");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[300000:], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());
+        
+        engImoveis.preparaConteudoBusca("cobertura abaixo de R$ 300 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[:300000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());   
+        
+        engImoveis.preparaConteudoBusca("cobertura até R$ 300 mil");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[:300000], Tipo de imóvel=[Cobertura]}", engImoveis.getResultsAsString());        
+      
+        engImoveis.preparaConteudoBusca("apartamento até 200m2 e acima de R$ 1milhão");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[1000000:], Área total=[10:200M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());   
+        
+        engImoveis.preparaConteudoBusca("apartamento até 200m2 e acima de R$ 1.000.000,00");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[1000000:], Área total=[10:200M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());   
+        
+        engImoveis.preparaConteudoBusca("apartamento até 200 m2 e acima de R$ 1milhão");
+        engImoveis.executeQuery();
+        assertEquals("{Preço=[1000000:], Área total=[10:200M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());   
+        
+        
+    }
 }

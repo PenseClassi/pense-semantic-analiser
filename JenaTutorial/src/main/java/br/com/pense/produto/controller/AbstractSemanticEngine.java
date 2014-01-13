@@ -630,7 +630,6 @@ public abstract class AbstractSemanticEngine {
         Map<String, List<String>> lstParameters = getResultAsParameter();
 
         if (lstParameters != null) {
-            System.out.println(lstParameters.toString());
             return lstParameters.toString();
         }
         return "";
