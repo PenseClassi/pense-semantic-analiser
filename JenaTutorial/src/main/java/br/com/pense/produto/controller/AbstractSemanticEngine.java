@@ -19,7 +19,7 @@ public abstract class AbstractSemanticEngine {
     private String textoBusca;
     private Query query;
     protected List<String> listaDePalavrasParaPesquisa;
-    private static OntModel ontologia;
+    private OntModel ontologia;
     List<QuerySolution> lstResultados;
 
     public AbstractSemanticEngine() {
@@ -50,85 +50,14 @@ public abstract class AbstractSemanticEngine {
         this.query = query;
     }
 
-
     /*
-     * Trata o conteudo informado no campo de busca para posterior pesquisa 
-     * @return	Verdadeiro se procedimento terminou corretamente
-     */
-    @Deprecated
-    public boolean preparaConteudoBusca() {
-        if (!this.textoBusca.isEmpty()) {
-
-            String[] lstPalavras = this.textoBusca.split(" ");
-            int posPrimeiraReservada = 0;
-            int posSegundaReservada = 0;
-            List<String> palavrasDaPesquisa = new ArrayList<String>();
-            List<String> listaAuxiliarDePalavras = new ArrayList<String>();
-            int contador = 0;
-            String palavraPesquisa = "";
-
-            //Remove as palavras reservadas - as que não entram na pesquisa
-            for (String palavra : lstPalavras) {
-                if (!ehPalavraReservada(palavra)) {
-                    listaAuxiliarDePalavras.add(palavra);
-                }
-            }
-
-            for (String palavra : listaAuxiliarDePalavras) {
-                if (ehPalavraLigacao(palavra)) {
-                    //Ao encontrar a palavra marca a posicao inicial se não existir
-                    if (posPrimeiraReservada == 0) {
-                        posPrimeiraReservada = contador;
-                    } //Senão pega o intervalo entre a primeira e a segunda marcação como uma unica palavra
-                    else {
-                        palavraPesquisa = "";
-                        posSegundaReservada = contador;
-                        for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
-                            //Concatenando as palavras do intervalo
-                            palavraPesquisa += " " + lstPalavras[i];
-                        }
-                        //Nova palavra vai pra lista de palavras
-                        palavrasDaPesquisa.add(palavraPesquisa.trim());
-                        //Reseta ponteiros 
-                        posPrimeiraReservada = posSegundaReservada;
-                        posSegundaReservada = 0;
-                    }
-                } else {
-                    //Virgula representa o mesmo que uma palavra de ligação
-                    if (posPrimeiraReservada == 0) {
-                        palavrasDaPesquisa.add(palavra.replace(",", "").trim());
-                        if (palavra.contains(",")) {
-                            posPrimeiraReservada = contador;
-                        }
-                    } else {
-                        if (palavra.contains(",")) {
-                            palavrasDaPesquisa.add(palavra.replace(",", "").trim());
-                            posPrimeiraReservada = contador;
-                        }
-                    }
-                }
-                contador++;
-            }
-            //Uma palavra reservada foi encontrada mas a lista acabou, pega o intervalo
-            if (posPrimeiraReservada > posSegundaReservada) {
-                palavraPesquisa = "";
-                posSegundaReservada = lstPalavras.length;
-                for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
-                    //Concatenando as palavras do intervalo
-                    palavraPesquisa += " " + lstPalavras[i];
-                }
-                //Nova palavra vai pra lista de palavras
-                palavrasDaPesquisa.add(palavraPesquisa.trim());
-            }
-            System.out.println(palavrasDaPesquisa.toString() + " - " + palavrasDaPesquisa.size());
-            this.listaDePalavrasParaPesquisa = palavrasDaPesquisa;
-            return true;
-        }
-        return false;
-    }
-
+     Aplica a etapa de preprocessamento no texto informado, remove palavras reservadas e invoca a 
+    etapa de processamento da lista de termos de pesquisa
+    @param textoBusca String que contém o texto a ser processado
+    @result Verdadeiro para processamento sem problemas, Falso para erro no processo
+    */
     public boolean preparaConteudoBusca(String textoBusca) {
-        System.out.println("Texto: " + textoBusca);
+//        System.out.println("Texto: " + textoBusca);
         textoBusca = this.executaPreProcessamento(textoBusca);
         this.setTextoBusca(textoBusca);
         List<String> listaAuxiliarDePalavras = new ArrayList<String>();
@@ -139,19 +68,18 @@ public abstract class AbstractSemanticEngine {
 
             //Remove as palavras reservadas - as que não entram na pesquisa
             for (String palavra : lstPalavras) {
-                if (!ehPalavraReservada(palavra)) {
+                if (!ehPalavraReservada(palavra) && !palavra.trim().isEmpty()) {
                     listaAuxiliarDePalavras.add(palavra.trim());
                 }
             }
-            this.listaDePalavrasParaPesquisa = preparaListaParaPesquisa_d(listaAuxiliarDePalavras);
+            this.listaDePalavrasParaPesquisa = preparaListaParaPesquisa(listaAuxiliarDePalavras);
             System.out.println(this.listaDePalavrasParaPesquisa.toString() + " - " + this.listaDePalavrasParaPesquisa.size());
             return true;
         }
         return false;
-
     }
 
-    public List<String> preparaListaParaPesquisa_d(List<String> preLista) {
+    protected List<String> preparaListaParaPesquisa(List<String> preLista) {
         int posPrimeiraReservada = -1;
         int posSegundaReservada = -1;
         String palavraPesquisa = "";
@@ -159,11 +87,6 @@ public abstract class AbstractSemanticEngine {
         List<String> palavrasDaPesquisa = new ArrayList<String>();
         boolean jumpToNextWord = false;
         boolean indicacaoLugar = false;
-//        boolean temQuantidade = false;
-//        boolean temValor = false;
-//        int primeiraocorrenciaNumerica = -1;
-//        int segundaocorrenciaNumerica = -1;
-//        boolean obterSegundaOcorrenciaNumerica = false;
 
         boolean aspasDetectadas = false;
         int posPrimeiraAspa = -1;
@@ -218,7 +141,7 @@ public abstract class AbstractSemanticEngine {
 
                 if (ehPalavraLigacao(palavra)) {
 
-                    if (indicacaoLugar && !"com".equals(palavra) && !"no".equals(palavra)) {
+                    if (indicacaoLugar && !"com".equals(palavra) && !"no".equals(palavra) && !"na".equals(palavra)) {
                         contador++;
                         continue;
                     }
@@ -226,18 +149,33 @@ public abstract class AbstractSemanticEngine {
                     //Ao encontrar a palavra marca a posicao inicial se não existir
                     if (posPrimeiraReservada == -1) {
                         posPrimeiraReservada = contador;
+                        //Adiciona o trecho até a primeira reservada como uma única palavra
+                        if (posPrimeiraReservada >= 2 && posPrimeiraReservada < 5){
+                            //Trata todo o vetor como uma única palavra
+                            palavraPesquisa = "";
+                            for (int i = 0; i < posPrimeiraReservada; i++) {
+                                //Concatenando as palavras do intervalo
+                                palavraPesquisa += " " + preLista.get(i);
+                            }
+                            //Nova palavra vai pra lista de palavras
+                            palavrasDaPesquisa.add(palavraPesquisa.trim());
+                        }
 
                     } //Senão pega o intervalo entre a primeira e a segunda marcação como uma unica palavra
                     else {
                         palavraPesquisa = "";
                         posSegundaReservada = contador;
-                        for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
-                            //Concatenando as palavras do intervalo
-                            palavraPesquisa += " " + preLista.get(i);
-                        }
-                        //Nova palavra vai pra lista de palavras
-                        if (!palavraPesquisa.isEmpty()) {
-                            palavrasDaPesquisa.add(palavraPesquisa.trim());
+                        if (indicacaoLugar){
+                            for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
+                                //Concatenando as palavras do intervalo
+                                palavraPesquisa += " " + preLista.get(i);
+                            }
+                            //Nova palavra vai pra lista de palavras
+                            if (!palavraPesquisa.isEmpty()) {
+                                palavrasDaPesquisa.add(palavraPesquisa.trim());
+                            }
+                        }else if (posPrimeiraReservada < posSegundaReservada) {
+                            palavrasDaPesquisa.addAll(preparaListaParaPesquisa(preLista.subList(posPrimeiraReservada + 1, posSegundaReservada)));
                         }
                         //Reseta ponteiros 
                         posPrimeiraReservada = posSegundaReservada;
@@ -254,13 +192,15 @@ public abstract class AbstractSemanticEngine {
                                 }
                                 novaPalavra += " " + palavra;
                                 novaPalavra += " " + preLista.get(contador + 1);
-                                palavrasDaPesquisa.remove(palavrasDaPesquisa.size() - 1);
+                                if (ehPalavraDeExcessao(palavrasDaPesquisa.get(palavrasDaPesquisa.size() - 1))){
+                                    palavrasDaPesquisa.remove(palavrasDaPesquisa.size() - 1);
+                                }
                                 palavrasDaPesquisa.add(novaPalavra.replace(",", "").trim());
                                 posPrimeiraReservada++;
                                 jumpToNextWord = true;
                             }
                         }
-                    } else if ("em".equals(palavra)) {
+                    } else if ("em".equals(palavra) | "no".equals(palavra) | "na".equals(palavra)) {
                         //Quando indicação de um lugar "em" pegar como palavra o intervalo até "com", "," ou fim da lista
                         indicacaoLugar = true;
                     }
@@ -291,7 +231,7 @@ public abstract class AbstractSemanticEngine {
 
                             } else {
                                 //Reprocessa as palavras entre a primeira reservada e a palavra com virgula
-                                palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada + 1, contador)));
+                                palavrasDaPesquisa.addAll(preparaListaParaPesquisa(preLista.subList(posPrimeiraReservada + 1, contador)));
                                 //Insere a palavra com vírgula na lista tb
                                 palavrasDaPesquisa.add(palavra.replace(",", "").trim());
                             }
@@ -305,7 +245,9 @@ public abstract class AbstractSemanticEngine {
         //Uma palavra reservada foi encontrada mas a lista acabou, reprocessa o restante
         if (posPrimeiraReservada > posSegundaReservada && posPrimeiraReservada < preLista.size()) {
             //Se a lista acabou com uma referencia a lugar "em" toma o restante como nome de cidade/lugar
-            if ("em".equals(preLista.get(posPrimeiraReservada).toLowerCase())) {
+            if ("em".equals(preLista.get(posPrimeiraReservada).toLowerCase()) 
+                    | "no".equals(preLista.get(posPrimeiraReservada).toLowerCase()) 
+                    | "na".equals(preLista.get(posPrimeiraReservada).toLowerCase())) {
                 //Trata o restante como uma unica palavra
                 palavraPesquisa = "";
                 posSegundaReservada = preLista.size();
@@ -318,228 +260,28 @@ public abstract class AbstractSemanticEngine {
             } else {
                 //Reprocessa o restante
                 if (preLista.get(posPrimeiraReservada).contains(",") || posPrimeiraReservada == 0) {
-                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada + 1, preLista.size())));
+                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa(preLista.subList(posPrimeiraReservada + 1, preLista.size())));
                 } else {
-                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada, preLista.size())));
+                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa(preLista.subList(posPrimeiraReservada, preLista.size())));
                 }
             }
+        }else if (posPrimeiraReservada == -1 && posSegundaReservada == -1 && (preLista.size() >= 2 && preLista.size() <= 5)){
+            //Trata todo o vetor como uma única palavra
+            palavraPesquisa = "";
+            for (int i = 0; i < preLista.size(); i++) {
+                //Concatenando as palavras do intervalo
+                palavraPesquisa += " " + preLista.get(i);
+            }
+            //Nova palavra vai pra lista de palavras
+            palavrasDaPesquisa.add(palavraPesquisa.trim());
         }
         return palavrasDaPesquisa;
     }
 
-    public List<String> preparaListaParaPesquisa_e(List<String> preLista) {
-        int posPrimeiraReservada = -1;
-        int posSegundaReservada = -1;
-        String palavraPesquisa = "";
-        int contador = 0;
-        List<String> palavrasDaPesquisa = new ArrayList<String>();
-        boolean jumpToNextWord = false;
-        boolean indicacaoLugar = false;
-        boolean temQuantidade = false;
-        boolean temValor = false; //TODO "R$" "US$"
-        int primeiraocorrenciaNumerica = -1;
-        int segundaocorrenciaNumerica = -1;
-        boolean obterSegundaOcorrenciaNumerica = false;
-
-        boolean aspasDetectadas = false;
-        int posPrimeiraAspa = -1;
-        int posSegundaAspa = -1;
-
-        for (String palavra : preLista) {
-            if (jumpToNextWord) {
-                jumpToNextWord = false;
-                posSegundaReservada = posPrimeiraReservada;
-                contador++;
-                continue;
-            }
-
-            if (!aspasDetectadas && palavra.startsWith("\"")) {
-                aspasDetectadas = true;
-                posPrimeiraAspa = contador;
-            } else if (aspasDetectadas && palavra.endsWith("\"")) {
-                aspasDetectadas = false;
-            }
-
-            //Identifica informação de que tem um valor especificado
-            if ("R$".equals(palavra)) {
-                temValor = true;
-                posPrimeiraReservada = contador;
-                contador++;
-                continue;
-            } else if (defineValorMoeda(palavra)) { //Detectou especificação de valor (moeda)
-                String auxPalavra = palavra;
-                if (auxPalavra.endsWith(",")) {
-                    auxPalavra = auxPalavra.substring(0, auxPalavra.length() - 1);
-                }
-                if (temValor) { //Já havia detectado a referencia a um valor
-                    palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + auxPalavra);
-                } else { //Sem a referencia informa uma (valor em reais) 
-                    palavrasDaPesquisa.add("R$ " + auxPalavra);
-                }
-                posPrimeiraReservada = contador;
-                temValor = false;
-                contador++;
-                continue;
-            }
-
-            // Verifica se a palavra define uma quantidade
-            if (!temQuantidade && defineQuantidade(palavra)) {
-                temQuantidade = true;
-                primeiraocorrenciaNumerica = contador;
-                posPrimeiraReservada = contador;
-                contador++;
-                continue;
-            }
-
-            // Pega os valores e monta as relações de quantidades
-            // n [e|a|até] m {elemento}
-            // n {elemento}
-            if (temQuantidade) {
-                if ("e".equals(palavra) || "a".equals(palavra) || "até".equals(palavra)) {
-                    //Intervalo de valores - define que tem de obter segunda ocorrencia numerica
-                    obterSegundaOcorrenciaNumerica = true;
-                } else if (obterSegundaOcorrenciaNumerica) {
-                    //Obtem a segunda ocorrencia numerica
-                    segundaocorrenciaNumerica = contador;
-                    obterSegundaOcorrenciaNumerica = false;
-                } else if (segundaocorrenciaNumerica != -1) {
-                    //Tendo as duas ocorrencias numericas monta as palavras e encerra a avaliação 
-                    palavrasDaPesquisa.add(preLista.get(primeiraocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
-                    palavrasDaPesquisa.add(preLista.get(segundaocorrenciaNumerica) + " " + palavra.replace(",", "").trim());
-                    temQuantidade = false;
-                    if (palavra.contains(",")) {
-                        posPrimeiraReservada = contador;
-                    } else {
-                        posPrimeiraReservada = 1 + contador;
-                    }
-                    segundaocorrenciaNumerica = -1;
-                } else {
-                    //Somente um valor - concatena direto
-                    palavrasDaPesquisa.add(preLista.get(posPrimeiraReservada) + " " + palavra.replace(",", "").trim());
-                    temQuantidade = false;
-                    if (palavra.contains(",")) {
-                        posPrimeiraReservada = contador;
-                    } else {
-                        posPrimeiraReservada = 1 + contador;
-                    }
-                }
-                contador++;
-                continue;
-            }
-
-            if (ehPalavraLigacao(palavra)) {
-
-                if (indicacaoLugar && !"com".equals(palavra) && !"no".equals(palavra)) {
-                    contador++;
-                    continue;
-                }
-
-                //Ao encontrar a palavra marca a posicao inicial se não existir
-                if (posPrimeiraReservada == -1) {
-                    posPrimeiraReservada = contador;
-
-                } //Senão pega o intervalo entre a primeira e a segunda marcação como uma unica palavra
-                else {
-                    palavraPesquisa = "";
-                    posSegundaReservada = contador;
-                    for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
-                        //Concatenando as palavras do intervalo
-                        palavraPesquisa += " " + preLista.get(i);
-                    }
-                    //Nova palavra vai pra lista de palavras
-                    if (!palavraPesquisa.isEmpty()) {
-                        palavrasDaPesquisa.add(palavraPesquisa.trim());
-                    }
-                    //Reseta ponteiros 
-                    posPrimeiraReservada = posSegundaReservada;
-                    posSegundaReservada = -1;
-                }
-
-                if ("de".equals(palavra) && contador - 1 >= 0) {
-                    if (ehPalavraDeExcessao(preLista.get(contador - 1))) {
-                        if (palavrasDaPesquisa.size() > 0) {
-                            //String novaPalavra = palavrasDaPesquisa.get(palavrasDaPesquisa.size()-1);
-                            String novaPalavra = "";
-                            if (contador - 1 >= 0) {
-                                novaPalavra += preLista.get(contador - 1);
-                            }
-                            novaPalavra += " " + palavra;
-                            novaPalavra += " " + preLista.get(contador + 1);
-                            palavrasDaPesquisa.remove(palavrasDaPesquisa.size() - 1);
-                            palavrasDaPesquisa.add(novaPalavra.replace(",", "").trim());
-                            posPrimeiraReservada++;
-                            jumpToNextWord = true;
-                        }
-                    }
-                } else if ("em".equals(palavra)) {
-                    //Quando indicação de um lugar "em" pegar como palavra o intervalo até "com", "," ou fim da lista
-                    indicacaoLugar = true;
-                }
-            } else {
-                //Virgula representa o mesmo que uma palavra de ligação
-                if (posPrimeiraReservada == -1) {
-                    palavrasDaPesquisa.add(palavra.replace(",", "").trim());
-                    if (palavra.contains(",")) {
-                        posPrimeiraReservada = contador;
-                    }
-                } else {
-                    if (palavra.contains(",")) {
-                        if (indicacaoLugar) {
-                            //Indicação de lugar pega o intervalo como uma unica palvra
-
-                            palavraPesquisa = "";
-                            posSegundaReservada = contador;
-                            for (int i = posPrimeiraReservada + 1; i <= posSegundaReservada; i++) {
-                                //Concatenando as palavras do intervalo
-                                palavraPesquisa += " " + preLista.get(i).replace(",", "").trim();
-                            }
-                            //Nova palavra vai pra lista de palavras
-                            palavrasDaPesquisa.add(palavraPesquisa.trim());
-                            //Reseta ponteiros 
-                            posSegundaReservada = -1;
-
-                            indicacaoLugar = false;
-
-                        } else {
-                            //Reprocessa as palavras entre a primeira reservada e a palavra com virgula
-                            palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada + 1, contador)));
-                            //Insere a palavra com vírgula na lista tb
-                            palavrasDaPesquisa.add(palavra.replace(",", "").trim());
-                        }
-                        posPrimeiraReservada = contador;
-                    }
-                }
-            }
-            contador++;
-        }
-        //Uma palavra reservada foi encontrada mas a lista acabou, reprocessa o restante
-        if (posPrimeiraReservada > posSegundaReservada && posPrimeiraReservada < preLista.size()) {
-            //Se a lista acabou com uma referencia a lugar "em" toma o restante como nome de cidade/lugar
-            if ("em".equals(preLista.get(posPrimeiraReservada).toLowerCase())) {
-                //Trata o restante como uma unica palavra
-                palavraPesquisa = "";
-                posSegundaReservada = preLista.size();
-                for (int i = posPrimeiraReservada + 1; i < posSegundaReservada; i++) {
-                    //Concatenando as palavras do intervalo
-                    palavraPesquisa += " " + preLista.get(i);
-                }
-                //Nova palavra vai pra lista de palavras
-                palavrasDaPesquisa.add(palavraPesquisa.trim());
-            } else {
-                //Reprocessa o restante
-                if (preLista.get(posPrimeiraReservada).contains(",") || posPrimeiraReservada == 0) {
-                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada + 1, preLista.size())));
-                } else {
-                    palavrasDaPesquisa.addAll(preparaListaParaPesquisa_d(preLista.subList(posPrimeiraReservada, preLista.size())));
-                }
-            }
-        }
-        return palavrasDaPesquisa;
-    }
     /*
-     * Avalia se a palavra informada é uma palavra de ligação
-     * @param palavra Palavra a ser avaliada
-     * @return Verdadeiro se a palavra for de ligação
+      Avalia se a palavra informada é uma palavra de ligação
+      @param palavra Palavra a ser avaliada
+      @return Verdadeiro se a palavra for de ligação
      */
 
     protected boolean ehPalavraLigacao(String palavra) {
@@ -563,9 +305,9 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Verifica se a palavra define uma quantidade
-     * @param Palavra a ser avaliada
-     * @return Verdadeiro se for uma quantidade
+      Verifica se a palavra define uma quantidade
+      @param Palavra a ser avaliada
+      @return Verdadeiro se for uma quantidade
      */
     private boolean defineQuantidade(String palavra) {
         if (palavra != null) {
@@ -582,9 +324,9 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Verifica se a palavra define um valor no formato de moeda
-     * @param Palavra a ser avaliada
-     * @return Verdadeiro se for um valor dentro do padrão: "1,00","1.000,00","1000,00"
+      Verifica se a palavra define um valor no formato de moeda
+      @param Palavra a ser avaliada
+      @return Verdadeiro se for um valor dentro do padrão: "1,00","1.000,00","1000,00"
      */
     private boolean defineValorMoeda(String palavra) {
         if (palavra != null) {
@@ -598,14 +340,13 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Informa se a palavra informada é reservada
-     * @param palavra Palavra para avaliação
-     * @result Verdadeiro se a palavra informada for reservada 
+      Informa se a palavra informada é reservada
+      @param palavra Palavra para avaliação
+      @result Verdadeiro se a palavra informada for reservada 
      */
     private boolean ehPalavraReservada(String palavra) {
         palavra = palavra.toLowerCase();
         if ("bairro".equals(palavra)
-                || "cidade".equals(palavra)
                 || "região".equals(palavra)
                 || "estado".equals(palavra)) {
             return true;
@@ -614,17 +355,17 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Gera a query de consulta SPARQL baseado em uma lista de palavras informadas
-     * @param lstPalavras Lista de palavras que deverão estar presentes na consulta
-     * @return Query para aplicação em uma consulta
+      Gera a query de consulta SPARQL baseado em uma lista de palavras informadas
+      @param lstPalavras Lista de palavras que deverão estar presentes na consulta
+      @return Query para aplicação em uma consulta
      */
     protected abstract Query geraConsultaSPARQL(List<String> lstPalavras);
 
     protected abstract boolean ehPalavraDeExcessao(String palavra);
 
     /*
-     * Obtém o resultado da consulta à ontologia em uma string
-     * @return Resultados em uma string
+      Obtém o resultado da consulta à ontologia em uma string
+      @return Resultados em uma string
      */
     public String getResultsAsString() {
         Map<String, List<String>> lstParameters = getResultAsParameter();
@@ -636,8 +377,8 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Obtém o resultado da consulta à ontologia na forma de parâmetros
-     * @result Listagem dos resultados da consulta à ontologia na forma de parâmetros
+      Obtém o resultado da consulta à ontologia na forma de parâmetros
+      @return Listagem dos resultados da consulta à ontologia na forma de parâmetros
      */
     public Map<String, List<String>> getResultAsParameter() {
         Map<String, List<String>> lstParametros = new HashMap<String, List<String>>();
@@ -664,7 +405,7 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Executa a consulta junto a ontologia armazenando o resultado em uma lista de resultados
+      Executa a consulta junto a ontologia armazenando o resultado em uma lista de resultados
      */
     public void executeQuery() {
         Query query = this.geraConsultaSPARQL(this.listaDePalavrasParaPesquisa);
@@ -678,12 +419,12 @@ public abstract class AbstractSemanticEngine {
     }
 
     /*
-     * Processa o texto informado procurando aprametrizar o seu conteúdo para aplicar à consulta do site,
-     * objetivando melhorar a precisão do resultado.
-     * @param texto Conteúdo a ser parametrizado
-     * @return Verdadeiro para execução da consulta, Falso para erro no procedimento
+      Processa o texto informado procurando parametrizar o seu conteúdo para aplicar à consulta do site,
+      objetivando melhorar a precisão do resultado.
+      @param texto Conteúdo a ser parametrizado
+      @return Verdadeiro para execução da consulta e geraçao de resultados, Falso para erro no procedimento
      */
-    public boolean obtemParametros(String texto) {
+    public synchronized boolean geraParametros(String texto) {
         if (!StringUtils.isEmpty(texto)) {
             try {
                 this.preparaConteudoBusca(texto);                
@@ -694,6 +435,44 @@ public abstract class AbstractSemanticEngine {
             }
         }
         return false;
+    }
+    
+    /*
+      Processa o texto informado procurando parametrizar o seu conteúdo para aplicar à consulta do site,
+      objetivando melhorar a precisão do resultado, tras no resultado o resultado do processamento
+      @param texto Conteúdo a ser parametrizado
+      @return String com os parâmetros gerados no processo.
+     */    
+    public synchronized String obtemParametrosAsString(String texto) {
+        if (!StringUtils.isEmpty(texto)) {
+            try {
+                this.preparaConteudoBusca(texto);                
+                this.executeQuery();
+                return this.getResultsAsString();
+            } catch (Exception e) {
+
+            }
+        }
+        return "";
+    }
+    
+    /*
+      Processa o texto informado procurando parametrizar o seu conteúdo para aplicar à consulta do site,
+      objetivando melhorar a precisão do resultado, tras no resultado o resultado do processamento
+      @param texto Conteúdo a ser parametrizado
+      @return Map com os parâmetros gerados no processo.
+     */    
+    public Map<String, List<String>> obtemParametros(String texto) {
+        if (!StringUtils.isEmpty(texto)) {
+            try {
+                this.preparaConteudoBusca(texto);                
+                this.executeQuery();
+                return this.getResultAsParameter();
+            } catch (Exception e) {
+
+            }
+        }
+        return new HashMap<String, List<String>>();
     }
 
     protected abstract Map<String, List<String>> executaPosProcessamento(Map<String, List<String>> mapParametros);

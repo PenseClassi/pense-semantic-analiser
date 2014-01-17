@@ -15,27 +15,34 @@ import java.util.regex.Pattern;
 public class SemanticEngineImoveis extends AbstractSemanticEngine {
 
     private static final String PREFIX_IMOVEIS = "PREFIX ont: <http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#>";
-    private static boolean ontologiaCarregada;
+//    private static boolean ontologiaCarregada;
     
     
     public SemanticEngineImoveis() {
-        if (!ontologiaCarregada){
+//        if (!ontologiaCarregada){
             setOntologia(ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null));
-            try {
-                getOntologia().read("file:////C://Desenvolvimento//Workspace//trunk//produtos//imoveis//pense-imoveis//src//main//webapp//WEB-INF//Imoveis.owl", "RDF/XML");
-                ontologiaCarregada = true;
-    //            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
-                System.out.println("Ontologia de imoveis carregada.");
-            } catch (JenaException je) {
-                System.out.println(je.getMessage());
-                ontologiaCarregada = false;
-            }
-        }
+            System.out.println("Iniciando carregamento da ontologia.");
+            carregaOntologia();
+//        }
     }
     
-    public void start(){
-        System.out.println("Iniciando carregamento da ontologia.");
-        new SemanticEngineImoveis();
+    public void recarregaOntologia(){
+        System.out.println("Iniciando recarregamento da ontologia.");
+        carregaOntologia();
+    }
+    
+    private boolean carregaOntologia(){
+        try {
+            getOntologia().read("file:////C://Desenvolvimento//Workspace//trunk//produtos//imoveis//pense-imoveis//src//main//webapp//WEB-INF//Imoveis.owl", "RDF/XML");
+//            ontologiaCarregada = true;
+//            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
+            System.out.println("Ontologia de imoveis carregada.");
+            return true;
+        } catch (JenaException je) {
+            System.out.println(je.getMessage());
+//            ontologiaCarregada = false;
+        }
+        return false;
     }
 
     @Override
@@ -52,7 +59,12 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                     if (!primeiraPalavra) {
                         queryString += "||";
                     }                
-                    queryString += "regex(?y, \"^" + palavra.toLowerCase() + "$\", \"i\")";
+                    queryString += "regex(?y, \"^" + palavra.toLowerCase()
+                            .replaceAll("à|á|â|ã", "a")
+                            .replaceAll("è|é|ê", "e")
+                            .replaceAll("ì|í|î", "i")
+                            .replaceAll("ò|ó|ô|õ", "o")
+                            .replaceAll("ù|ú|û", "u")+ "$\", \"i\")";
                     primeiraPalavra = false;
                 }
             }
@@ -73,7 +85,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     @Override
     protected boolean ehPalavraDeExcessao(String palavra) {
         palavra = palavra.toLowerCase();
-        if ("casa".equals(palavra) || "salão".equals(palavra)) {
+        if ("casa".equals(palavra) || "salão".equals(palavra) || "salao".equals(palavra)) {
             return true;
         }
         return false;
@@ -88,7 +100,6 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         
         List<String> lstParametros = new ArrayList<String>();
         for (String s:this.listaDePalavrasParaPesquisa){
-//            if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
             if(s.startsWith("R$")){
                 if (s.equals("R$ 0,01")){ 
                     somentePrimeiroParametro = true;
@@ -102,7 +113,6 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                     mapParametros.put("Preço", lstParametros);
                 }
             }else if(s.toLowerCase().matches("[\\d\\.]+(m2|ha)")){    
-//            }else if(s.toLowerCase().endsWith(" m2") || s.endsWith(" m²") || s.toLowerCase().endsWith(" ha")){
                 sufixo= (s.toLowerCase().endsWith("ha"))? "HA":"M2";
                 lstParametros = mapParametros.get("Área total");
                 if (lstParametros == null) lstParametros = new ArrayList<String>();
@@ -175,6 +185,10 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         //Valores descritos como "milhão" ou "milhões" são substituidos pelos números
         Pattern pattern = Pattern.compile("\\s?milh[ões|ão]+");
         Matcher matcher = pattern.matcher(texto);
+        
+        String auxString = "";
+        StringBuffer sb = new StringBuffer();
+        Boolean found = false;
 
         texto = matcher.replaceAll(".000.000,00");
 
@@ -197,51 +211,64 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         pattern = Pattern.compile("\\s?(metros quadrados|m²)");
         matcher = pattern.matcher(texto);
         texto = matcher.replaceAll("m2");
+
+//        //Troca parâmetros nd => n dormitorios
+//        pattern = Pattern.compile("\\s(1|2|3|4|5)d\\s");
+//        matcher = pattern.matcher(texto);
+//
+//        while (matcher.find()) {
+//            texto = matcher.replaceAll(" $1 dormitorios ");
+//            matcher = pattern.matcher(texto);
+//        }
+//        auxString = "";
+//        sb = new StringBuffer();
+//        found = false;
+//        
         
         //Quando tem "a partir de"
-        pattern = Pattern.compile("\\s((a partir de)|(acima de)|(abaixo de)|(até)|(de))\\s(R\\$\\s)?([\\d\\.\\,]+)\\s?(m2)?");
+//        pattern = Pattern.compile("\\s?((a partir de)|(acima de)|(abaixo de)|(até)|(de))\\s(R\\$\\s?)?([\\d\\.\\,]+)\\s?(m2)?");
+        pattern = Pattern.compile("((\\s\\d\\s)|\\s)?((a partir de)|(acima de)|(abaixo de)|(até)|(de))\\s(R\\$\\s?)?([\\d\\.\\,]+)\\s?(m2)?");
         matcher = pattern.matcher(texto);
         
-        String auxString = "";
-        StringBuffer sb = new StringBuffer();
-        Boolean found = false;
-
         String val1, dinheiro, valor, metragem = "";
         while (matcher.find()) {
-            auxString = "";
-            val1 = matcher.group(1);
-            if (val1 != null){ //um termo foi encontrado
-                dinheiro = matcher.group(7);
-                valor = matcher.group(8);
-                metragem = matcher.group(9);
-                
-                if ("até".equals(val1) || "abaixo de".equals(val1)){
-                    if (dinheiro != null){
-                        auxString = " R\\$ 0,00, R\\$ " + valor + " ";
-                    }else if (metragem != null){
-                        auxString = " 10" + metragem + ", " + valor + metragem + " ";
-                    }else{
-                        auxString = " 0,00, " + valor + " ";
+            String tmpVal = matcher.group(1);
+            if (tmpVal != null && tmpVal.trim().isEmpty()){
+                auxString = "";
+                val1 = matcher.group(3);
+                if (val1 != null){ //um termo foi encontrado
+                    dinheiro = matcher.group(9);
+                    valor = matcher.group(10);
+                    metragem = matcher.group(11);
+
+                    if ("até".equals(val1) || "abaixo de".equals(val1)){
+                        if (dinheiro != null){
+                            auxString = " R\\$ 0,00, R\\$ " + valor + " ";
+                        }else if (metragem != null){
+                            auxString = " 10" + metragem + ", " + valor + metragem + " ";
+                        }else if (valor.contains(",")){
+                            auxString = " 0,00, " + valor + " ";
+                        }
+                    }else if("a partir de".equals(val1) || "acima de".equals(val1)){
+                        if (dinheiro != null){
+                            auxString = " R\\$ 0,01,  R\\$ " + valor + " ";
+                        }else if (metragem != null){
+                            auxString = " 1000" + metragem + ", " + valor + metragem + " ";
+                        }else{
+                            auxString = " 0,01, " + valor + " ";
+                        }
+                    }else if("de".equals(val1)){
+                        if (dinheiro != null){
+                            auxString = " R\\$ " + valor + ",  R\\$ " + valor + " ";
+                        }else if (metragem != null){
+                            auxString = " "+ valor + metragem + ", " + valor + metragem + " ";
+                        }
                     }
-                }else if("a partir de".equals(val1) || "acima de".equals(val1)){
-                    if (dinheiro != null){
-                        auxString = " R\\$ 0,01,  R\\$ " + valor + " ";
-                    }else if (metragem != null){
-                        auxString = " 1000" + metragem + ", " + valor + metragem + " ";
-                    }else{
-                        auxString = " 0,01, " + valor + " ";
+
+                    if (!auxString.isEmpty()){
+                        matcher.appendReplacement(sb, auxString);
+                        found = true;
                     }
-                }else if("de".equals(val1)){
-                    if (dinheiro != null){
-                        auxString = " R\\$ " + valor + ",  R\\$ " + valor + " ";
-                    }else if (metragem != null){
-                        auxString = " "+ valor + metragem + ", " + valor + metragem + " ";
-                    }
-                }
-                
-                if (!auxString.isEmpty()){
-                    matcher.appendReplacement(sb, auxString);
-                    found = true;
                 }
             }
         }
@@ -263,28 +290,6 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
         StringBuffer sb = new StringBuffer();
         boolean found = false;
         String auxString = "";
-//        
-//        // {Área m2}        
-//        pattern = Pattern.compile("[\\d\\.]+\\s?(m2|m²)");
-//        matcher = pattern.matcher(texto);
-//
-//        while (matcher.find()) {
-//            auxString = matcher.group();
-//            int tamAuxString = auxString.length();
-//            if (!auxString.substring(tamAuxString-3, tamAuxString-2).equals(" ")){ 
-//                auxString = auxString.substring(0, tamAuxString-2)+" m2";
-//            }
-//           
-//            matcher.appendReplacement(sb, "\"" + auxString + "\"");
-//            found = true;
-//        }
-//        if (found){
-//            matcher.appendTail(sb);
-//            texto = sb.toString();
-//        }
-//        sb = new StringBuffer();
-//        found = false;
-//        auxString = "";
         
         String[] lstExpressoes = {"[\\d\\.]+\\s?(m2|m²)"};
         Pattern pattern;
@@ -303,6 +308,13 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             matcher.appendTail(sb);
             texto = sb.toString();
         }
+        
+        //Churrasqueira Coletiva | Loja comercial
+//        pattern = Pattern.compile("(churrasqueira coletiva)");
+//        pattern = Pattern.compile("((churrasqueira coletiva)|([aá]rea de serviço))");
+        pattern = Pattern.compile("((churrasqueira coletiva)|((sala|pr[ée]dio|casa|im[óo]vel) comercial)|(casa em condom[íi]nio)|(cap[ãa]o novo)|(balne[áa]rio cambori[úu]))");
+        matcher = pattern.matcher(texto);
+        texto = matcher.replaceAll("\"$1\"");
         
         //Dinheiro tem tratamento diferenciado - Normalização utiliza R$ e ,
         pattern = Pattern.compile("(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})|(R\\$)\\s?(\\d{1,3}[\\.\\d{3}]*)|(\\d{1,3}[\\.\\d{3}]*\\,\\d{2})");
@@ -328,6 +340,31 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             matcher.appendTail(sb);
             texto = sb.toString();
         }
+        //Tratamento para termos: com mais de | com menos de
+        pattern  = Pattern.compile("\\s?((com mais de)|(com menos de)|(até))\\s(\\d)\\s((vagas de garagem)|[\\wÀ-ú]+)");
+        matcher = pattern.matcher(texto);
+        
+        sb = new StringBuffer();
+        found = false;
+
+        while (matcher.find()) {
+            String termo = matcher.group(1);
+            String elemento = matcher.group(6);
+            String valor = matcher.group(5);
+            
+            String novoValor = "";
+            if("com mais de".equals(termo)) novoValor = "5"; //Se o parâmtro for "mais" troca por 5
+            if("com menos de".equals(termo) || "até".equals(termo)) novoValor = "1"; //Se o parâmtro for "menos" troca por 1
+
+
+            matcher.appendReplacement(sb, " " + novoValor + " " + elemento + ", " + valor + " " + elemento);
+            found = true;
+        }
+        if (found){
+            matcher.appendTail(sb);
+            texto = sb.toString();
+        }
+        
         
         //Tratamento para termos: n [e|a|ou|ate] m xxxxxxx
         pattern = Pattern.compile("((\\d)\\s(e|a|(ou)|(até))\\s)?(\\d|(mais)|(menos))\\s((vagas de garagem)|[\\wÀ-ú]+)");
