@@ -7,6 +7,7 @@
 package br.com.pense.produto.controller;
 
 import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
@@ -4585,5 +4586,14 @@ public class CidadesTest extends TestCase {
         engImoveis.preparaConteudoBusca("casa em Três Coroas");
         engImoveis.executeQuery();
         assertEquals("{cidade=[Três Coroas], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+    }
+    
+    public void testCidadeBairro() {
+        System.out.println(">>>>  testCidadeBairro");
+        assertEquals("{cidade=[Porto Alegre], bairroCodigo=[3960], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa em Porto Alegre no Menino Deus")); 
+        
+        assertEquals("{cidade=[Porto Alegre], bairroCodigo=[3930], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa em Porto Alegre no centro")); 
+        
+        assertEquals("{Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa no centro")); 
     }
 }

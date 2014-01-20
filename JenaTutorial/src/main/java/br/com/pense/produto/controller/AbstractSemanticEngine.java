@@ -11,6 +11,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.rdf.model.Literal;
 import java.util.HashMap;
 import org.springframework.util.StringUtils;
 
@@ -73,7 +74,7 @@ public abstract class AbstractSemanticEngine {
                 }
             }
             this.listaDePalavrasParaPesquisa = preparaListaParaPesquisa(listaAuxiliarDePalavras);
-            System.out.println(this.listaDePalavrasParaPesquisa.toString() + " - " + this.listaDePalavrasParaPesquisa.size());
+//            System.out.println(this.listaDePalavrasParaPesquisa.toString() + " - " + this.listaDePalavrasParaPesquisa.size());
             return true;
         }
         return false;
@@ -385,19 +386,42 @@ public abstract class AbstractSemanticEngine {
         String auxString;
         String[] lstPalavras;
         List<String> param;
+
         for (QuerySolution item : this.lstResultados) {
             auxString = item.getLiteral("parametro").toString();
             if (auxString != null && !auxString.isEmpty()) {
+                
                 lstPalavras = auxString.split("=");
-
-                //Verifica se já não há registros do tipo do parâmetro
-                if (lstParametros.containsKey(lstPalavras[0])) {
-                    param = lstParametros.get(lstPalavras[0]);
-                } else {
-                    param = new ArrayList<String>();
+                
+                //Encontrando uma referencia a bairro verifica se a cidade correspondete está na lista
+                if ("bairroCodigo".equals(lstPalavras[0])){
+                    List<String> cidades = lstParametros.get("cidade");
+                    if (cidades != null && !cidades.isEmpty()){
+                        Literal l = item.getLiteral("parametroCidade");
+                        if (l != null){
+                            String cidadeRef = l.toString(); 
+                            String[] lstAux = cidadeRef.split("=");
+                            if (cidades.contains(lstAux[1])){
+                                if (lstParametros.containsKey(lstPalavras[0])) {
+                                    param = lstParametros.get(lstPalavras[0]);
+                                } else {
+                                    param = new ArrayList<String>();
+                                }
+                                param.add(lstPalavras[1]);
+                                lstParametros.put(lstPalavras[0], param);
+                            }
+                        }
+                    }
+                }else{
+                    //Verifica se já não há registros do tipo do parâmetro
+                    if (lstParametros.containsKey(lstPalavras[0])) {
+                        param = lstParametros.get(lstPalavras[0]);
+                    } else {
+                        param = new ArrayList<String>();
+                    }
+                    param.add(lstPalavras[1]);
+                    lstParametros.put(lstPalavras[0], param);
                 }
-                param.add(lstPalavras[1]);
-                lstParametros.put(lstPalavras[0], param);
             }
         }
 

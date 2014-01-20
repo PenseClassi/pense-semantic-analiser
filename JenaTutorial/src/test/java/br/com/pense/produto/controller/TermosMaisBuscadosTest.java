@@ -1442,7 +1442,7 @@ public class TermosMaisBuscadosTest {
     @Test
     public void test_termo_232() {
         System.out.println(">>>>  test_termo_232");
-        assertEquals("{cidade=[Florianópolis], Tipo de imóvel=[Apartamento]}", engImoveis.obtemParametrosAsString("apartamento centro Florianopolis"));
+        assertEquals("{cidade=[Florianópolis], bairroCodigo=[4089], Tipo de imóvel=[Apartamento]}", engImoveis.obtemParametrosAsString("apartamento centro Florianopolis"));
     }
 
     @Test

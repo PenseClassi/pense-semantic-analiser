@@ -123,15 +123,15 @@ public class AbstractSemanticEngineTest extends TestCase {
 
         engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com lareira, churrasqueira e play");
         engImoveis.executeQuery();
-        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Churrasqueira, Lareira], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Lareira, Churrasqueira], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
 
         engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com 2d, lareira, churrasqueira e play");
         engImoveis.executeQuery();
-        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Churrasqueira, Lareira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Playground], Características=[Lareira, Churrasqueira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
 
         engImoveis.preparaConteudoBusca("casa em São Francisco de Paula com dois quartos, lareira, churrasqueira e play piscina zelador");
         engImoveis.executeQuery();
-        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Piscina, Playground, Zelador], Características=[Churrasqueira, Lareira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
+        assertEquals("{cidade=[São Francisco de Paula], Infraestrutura=[Zelador, Playground, Piscina], Características=[Lareira, Churrasqueira], Dormitórios=[2:2], Tipo de imóvel=[Casa]}", engImoveis.getResultsAsString());
     }
 
     public void testConsultaQuarto() {
@@ -233,7 +233,7 @@ public class AbstractSemanticEngineTest extends TestCase {
         assertEquals("{Preço=[300000:400000], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
         
 
-        String ret = "{cidade=[Porto Alegre], Banheiros=[1:], Preço=[:1000000], Infraestrutura=[Piscina], Características=[Churrasqueira], Vagas de garagem=[1:], Tipo de imóvel=[Casa]}";
+        String ret = "{Banheiros=[1:], cidade=[Porto Alegre], Preço=[:1000000], Infraestrutura=[Piscina], Características=[Churrasqueira], Vagas de garagem=[1:], Tipo de imóvel=[Casa]}";
         assertEquals(ret, engImoveis.obtemParametrosAsString("casa com piscina, churrasqueira, banheiro e garagem em poa, abaixo de R$1.000.000,00"));
         assertEquals(ret, engImoveis.obtemParametrosAsString("casa com piscina, churrasqueira, banheiro e garagem em poa, abaixo de R$ 1.000.000,00"));
         assertEquals(ret, engImoveis.obtemParametrosAsString("casa com piscina, churrasqueira, banheiro e garagem em poa, abaixo de 1.000.000,00"));
@@ -246,22 +246,22 @@ public class AbstractSemanticEngineTest extends TestCase {
     public void testCidadeBairros(){
         System.out.println(">>>> testCidadeBairros");
         assertEquals("{cidade=[Porto Alegre], bairroCodigo=[3919], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa em porto alegre na azenha")); 
-        assertEquals("{cidade=[Canoas], bairroCodigo=[3919], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa em canoas na azenha"));
+        assertEquals("{cidade=[Canoas], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa em canoas na azenha"));
     }
     
     public void testMaisDeMenosDe(){
         System.out.println(">>>> testMaisDeMenosDe");
         assertEquals("{Dormitórios=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos"));
         assertEquals("{Dormitórios=[1:4], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com menos de 4 quartos"));
-        assertEquals("{Suítes=[2:3], Dormitórios=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, de 2 a 3 suites"));
-        assertEquals("{Suítes=[1:3], Dormitórios=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, com menos de 3 suites"));
-        assertEquals("{Suítes=[2:5], Dormitórios=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, 2 ou mais suites"));
-        assertEquals("{Suítes=[1:3], Dormitórios=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, 3 ou menos suites"));
+        assertEquals("{Dormitórios=[2:5], Suítes=[2:3], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, de 2 a 3 suites"));
+        assertEquals("{Dormitórios=[2:5], Suítes=[1:3], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, com menos de 3 suites"));
+        assertEquals("{Dormitórios=[2:5], Suítes=[2:5], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, 2 ou mais suites"));
+        assertEquals("{Dormitórios=[2:5], Suítes=[1:3], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com mais de 2 quartos, 3 ou menos suites"));
     }
     
     public void testBairros(){
         System.out.println(">>>> testBairros");
-        assertEquals("{bairroCodigo=[3919], Tipo de imóvel=[Casa]}",engImoveis.obtemParametrosAsString("casa na azenha"));       
+        assertEquals("{Tipo de imóvel=[Casa]}",engImoveis.obtemParametrosAsString("casa na azenha"));       
     }
     
     public void testInfra(){
@@ -352,6 +352,101 @@ public class AbstractSemanticEngineTest extends TestCase {
         engImoveis.executeQuery();
         assertEquals("{Preço=[1000000:], Área total=[10:200M2], Tipo de imóvel=[Apartamento]}", engImoveis.getResultsAsString());
         
-        assertEquals("{Características=[Churrasqueira], Dormitórios=[1:2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com churrasqueira com até 2 quartos"));  
+        assertEquals("{Características=[Churrasqueira], Dormitórios=[1:2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa com churrasqueira com até 2 quartos"));   
+    }
+    
+    public void testIntervalosValores_01() {
+        System.out.println(">>>>  testIntervalosValores_01");
+        assertEquals("{Dormitórios=[1:2]}", engImoveis.obtemParametrosAsString("até 2 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_02() {
+        System.out.println(">>>>  testIntervalosValores_02");
+        assertEquals("{Dormitórios=[3:5]}", engImoveis.obtemParametrosAsString("com mais de 3 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_03() {
+        System.out.println(">>>>  testIntervalosValores_03");
+        assertEquals("{Dormitórios=[1:4]}", engImoveis.obtemParametrosAsString("com menos de 4 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_04() {
+        System.out.println(">>>>  testIntervalosValores_04");
+        assertEquals("{Dormitórios=[1:3]}", engImoveis.obtemParametrosAsString("de 1 a 3 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_05() {
+        System.out.println(">>>>  testIntervalosValores_05");
+        assertEquals("{Dormitórios=[2:4]}", engImoveis.obtemParametrosAsString("de 2 até 4 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_06() {
+        System.out.println(">>>>  testIntervalosValores_06");
+        assertEquals("{Dormitórios=[1:3]}", engImoveis.obtemParametrosAsString("com 1 e 3 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_07() {
+        System.out.println(">>>>  testIntervalosValores_07");
+        assertEquals("{Dormitórios=[2:4]}", engImoveis.obtemParametrosAsString("com 2 ou 4 dormitórios"));  
+    }
+ 
+    public void testIntervalosValores_08() {
+        System.out.println(">>>>  testIntervalosValores_08");
+        assertEquals("{Dormitórios=[1:3]}", engImoveis.obtemParametrosAsString("com 3 ou menos quartos"));  
+    }
+ 
+    public void testIntervalosValores_09() {
+        System.out.println(">>>>  testIntervalosValores_09");
+        assertEquals("{Dormitórios=[2:5]}", engImoveis.obtemParametrosAsString("com 2 ou mais quartos"));  
+    }
+ 
+    public void testIntervalosValores_10() {
+        System.out.println(">>>>  testIntervalosValores_10");
+        assertEquals("{Área total=[13:1000M2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa a partir de 13m²"));  
+    }
+ 
+    public void testIntervalosValores_11() {
+        System.out.println(">>>>  testIntervalosValores_11");
+assertEquals("{Área total=[13:1000M2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa acima de 13m²"));  
+    }
+ 
+    public void testIntervalosValores_12() {
+        System.out.println(">>>>  testIntervalosValores_12");
+assertEquals("{Área total=[10:30M2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa abaixo de 30m²"));  
+    }
+ 
+    public void testIntervalosValores_13() {
+        System.out.println(">>>>  testIntervalosValores_13");
+assertEquals("{Área total=[10:40M2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa até 40m²"));  
+    }
+ 
+    public void testIntervalosValores_14() {
+        System.out.println(">>>>  testIntervalosValores_14");
+assertEquals("{Área total=[50:50M2], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa de 50m²"));  
+    }
+ 
+    public void testIntervalosValores_15() {
+        System.out.println(">>>>  testIntervalosValores_15");
+assertEquals("{Preço=[300000:], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa a partir de R$ 300mil"));  
+    }
+ 
+    public void testIntervalosValores_16() {
+        System.out.println(">>>>  testIntervalosValores_16");
+        assertEquals("{Preço=[1000000:], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa acima de R$ 1milhão"));  
+    }
+ 
+    public void testIntervalosValores_17() {
+        System.out.println(">>>>  testIntervalosValores_17");
+        assertEquals("{Preço=[1000000:], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa acima de R$ 1milhao"));  
+    }
+ 
+    public void testIntervalosValores_18() {
+        System.out.println(">>>>  testIntervalosValores_18");
+        assertEquals("{Preço=[:1000000], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa abaixo de R$ 1milhao"));  
+    }
+ 
+    public void testIntervalosValores_19() {
+        System.out.println(">>>>  testIntervalosValores_19");
+        assertEquals("{Preço=[:2000000], Tipo de imóvel=[Casa]}", engImoveis.obtemParametrosAsString("casa até R$ 2milhao")); 
     }
 }
