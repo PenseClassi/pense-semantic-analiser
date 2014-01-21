@@ -15,15 +15,12 @@ import java.util.regex.Pattern;
 public class SemanticEngineImoveis extends AbstractSemanticEngine {
 
     private static final String PREFIX_IMOVEIS = "PREFIX ont: <http://www.semanticweb.org/felipe/ontologies/2013/11/untitled-ontology-131#>";
-//    private static boolean ontologiaCarregada;
     
     
     public SemanticEngineImoveis() {
-//        if (!ontologiaCarregada){
-            setOntologia(ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null));
-            System.out.println("Iniciando carregamento da ontologia.");
-            carregaOntologia();
-//        }
+        setOntologia(ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null));
+        System.out.println("Iniciando carregamento da ontologia.");
+        carregaOntologia();
     }
     
     public void recarregaOntologia(){
@@ -33,15 +30,11 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     
     private boolean carregaOntologia(){
         try {
-            getOntologia().read("Ontologia//Imoveis.owl", "RDF/XML");
-//            getOntologia().read("file:////C://Desenvolvimento//Workspace//trunk//produtos//imoveis//pense-imoveis//src//main//webapp//WEB-INF//Imoveis.owl", "RDF/XML");
-//            ontologiaCarregada = true;
-//            getOntologia().read("file:./src/main/java/br/com/pense/produto/owl/Imoveis.owl", "RDF/XML");
+            getOntologia().read("Ontologia//Imoveis_Teste.owl", "RDF/XML");
             System.out.println("Ontologia de imoveis carregada.");
             return true;
         } catch (JenaException je) {
             System.out.println(je.getMessage());
-//            ontologiaCarregada = false;
         }
         return false;
     }
@@ -52,34 +45,31 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
             //Configura o prefixo da ontologia de imoveis
             String queryString = PREFIX_IMOVEIS;
 
-            //Monta a querystring com as palavras informadas
-            queryString += "SELECT distinct ?parametro ?parametroCidade WHERE { ?x ont:termo_pesquisa ?y. ?x ont:Nome_Parametro ?parametro. OPTIONAL {?x a ont:Bairros. ?x ont:BairroDaCidade ?cidade. ?cidade ont:Nome_Parametro ?parametroCidade. ?cidade ont:termo_pesquisa ?yCidade  FILTER (!sameTerm(?y, ?yCidade)) }. FILTER(";
+            queryString += "SELECT  distinct ?parametro ?parametroCidade WHERE {";
             boolean primeiraPalavra = true;
             for (String palavra : lstPalavras) {
                 if(!palavra.startsWith("R$") && !palavra.endsWith("m2") && !palavra.endsWith("m²")){
                     if (!primeiraPalavra) {
-                        queryString += "||";
+                        queryString += " UNION ";
                     }                
-//                    queryString += "regex(?y, \"^" + palavra.toLowerCase()
-//                            .replaceAll("à|á|â|ã", "a")
-//                            .replaceAll("è|é|ê", "e")
-//                            .replaceAll("ì|í|î", "i")
-//                            .replaceAll("ò|ó|ô|õ", "o")
-//                            .replaceAll("ù|ú|û", "u")+ "$\")";
-                    queryString += "(str(?y) = \"" + palavra.toLowerCase()
+
+                    palavra = palavra.toLowerCase()
                             .replaceAll("à|á|â|ã", "a")
                             .replaceAll("è|é|ê", "e")
                             .replaceAll("ì|í|î", "i")
                             .replaceAll("ò|ó|ô|õ", "o")
-                            .replaceAll("ù|ú|û", "u")
-                            +  "\")";
+                            .replaceAll("ù|ú|û", "u");
+                    
+                    queryString += "{?x ont:termo_pesquisa \""+ palavra +"\"@pt. ?x ont:Nome_Parametro ?parametro.} UNION ";
+                    queryString += "{?bairro ont:termo_pesquisa \""+ palavra +"\"@pt. ?bairro ont:BairroDoIndividuo ?individuo. ?individuo ont:Nome_Parametro ?parametro. ?individuo ont:BairroDaCidade ?cidade. ?cidade ont:Nome_Parametro ?parametroCidade. ?individuo ont:Nome_Bairro ?nomeBairro MINUS { ?cidade ont:termo_pesquisa \""+ palavra +"\"@pt } }";
+
                     primeiraPalavra = false;
                 }
             }
-            queryString += ")} ORDER BY DESC (?parametro)";
+            queryString += "} ORDER BY DESC (?parametro)";
 
             //Cria a query
-            Query query = null;
+            Query query;
             try {
                 query = QueryFactory.create(queryString);
             } catch (Exception e) {

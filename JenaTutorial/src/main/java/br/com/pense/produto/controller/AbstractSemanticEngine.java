@@ -387,6 +387,10 @@ public abstract class AbstractSemanticEngine {
         String[] lstPalavras;
         List<String> param;
 
+        List<String> cidades;
+        Literal l;
+        String cidadeRef;
+        String[] lstAux;
         for (QuerySolution item : this.lstResultados) {
             auxString = item.getLiteral("parametro").toString();
             if (auxString != null && !auxString.isEmpty()) {
@@ -395,12 +399,12 @@ public abstract class AbstractSemanticEngine {
                 
                 //Encontrando uma referencia a bairro verifica se a cidade correspondete está na lista
                 if ("bairroCodigo".equals(lstPalavras[0])){
-                    List<String> cidades = lstParametros.get("cidade");
+                    cidades = lstParametros.get("cidade");
                     if (cidades != null && !cidades.isEmpty()){
-                        Literal l = item.getLiteral("parametroCidade");
+                        l = item.getLiteral("parametroCidade");
                         if (l != null){
-                            String cidadeRef = l.toString(); 
-                            String[] lstAux = cidadeRef.split("=");
+                            cidadeRef = l.toString(); 
+                            lstAux = cidadeRef.split("=");
                             if (cidades.contains(lstAux[1])){
                                 if (lstParametros.containsKey(lstPalavras[0])) {
                                     param = lstParametros.get(lstPalavras[0]);

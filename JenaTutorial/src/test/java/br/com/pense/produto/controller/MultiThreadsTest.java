@@ -23,7 +23,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MultiThreadsTest {
     
-    private static final int NRO_THREADS = 100;
+    private static final int NRO_THREADS = 1000;
     
     private static SemanticEngineImoveis engImoveis;
     
