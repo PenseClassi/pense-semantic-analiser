@@ -30,11 +30,11 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
     
     private boolean carregaOntologia(){
         try {
-            getOntologia().read("Ontologia//Imoveis_Teste.owl", "RDF/XML");
+            getOntologia().read("Ontologia//Imoveis.owl", "RDF/XML");
             System.out.println("Ontologia de imoveis carregada.");
             return true;
         } catch (JenaException je) {
-            System.out.println(je.getMessage());
+            System.out.println("Ontologia de imoveis não carregada: " + je.getMessage());
         }
         return false;
     }
@@ -60,7 +60,7 @@ public class SemanticEngineImoveis extends AbstractSemanticEngine {
                             .replaceAll("ò|ó|ô|õ", "o")
                             .replaceAll("ù|ú|û", "u");
                     
-                    queryString += "{?x ont:termo_pesquisa \""+ palavra +"\"@pt. ?x ont:Nome_Parametro ?parametro.} UNION ";
+                    queryString += "{?x ont:termo_pesquisa \""+ palavra +"\"@pt. ?x ont:Nome_Parametro ?parametro} UNION ";
                     queryString += "{?bairro ont:termo_pesquisa \""+ palavra +"\"@pt. ?bairro ont:BairroDoIndividuo ?individuo. ?individuo ont:Nome_Parametro ?parametro. ?individuo ont:BairroDaCidade ?cidade. ?cidade ont:Nome_Parametro ?parametroCidade. ?individuo ont:Nome_Bairro ?nomeBairro MINUS { ?cidade ont:termo_pesquisa \""+ palavra +"\"@pt } }";
 
                     primeiraPalavra = false;
